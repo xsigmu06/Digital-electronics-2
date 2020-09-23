@@ -10,7 +10,7 @@
 
 ## _Homework_
 - [x] [01-tools](/Labs/01-tools) 
-- [ ] [01-tools](/Labs/01-tools) used code to [C example](#c-examples).
+- [ ] [01-tools](/Labs/01-tools) used code to [C examples](#c-examples).
 - [ ] Push commits to GitHub
 - [ ] [02-](/Labs/)
 
