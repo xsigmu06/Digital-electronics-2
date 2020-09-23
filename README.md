@@ -4,7 +4,7 @@
 
 | **Name** | **Description** |
 | :-- | :-- |
-| [01-tools](/Labs/01-tools) | -|
+| [01-tools](/Labs/01-tools) | Git version-control system, AVR tools|
 | [02-](/Labs/) | -|
 
 ## _Homework_
