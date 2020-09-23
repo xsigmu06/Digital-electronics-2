@@ -10,11 +10,11 @@
 
 ## _Homework_
 - [x] [01-tools](/Labs/01-tools) 
-- [ ] [01-tools](/Labs/01-tools) used code to [C examples](#c-examples).
+- [ ] [01-tools](/Labs/01-tools) used code to [C cheatsheet](#c-cheatsheet).
 - [ ] Push commits to GitHub
 - [ ] [02-](/Labs/)
 
-## C-examples
+## C-cheatsheet
 
 ```c
 int main() {
