@@ -4,8 +4,9 @@
 
 | **Name** | **Description** |
 | :-- | :-- |
-| [01-tools](/Labs/01-tools) | Git version-control system, AVR tools|
-| [02-](/Labs/) | -|
+| [01-tools](/Labs/01-tools) | Git version-control system, AVR tools|   
+| [02-](/Labs/) | Control of GPIO, LED, push button|
+| [03-](/Labs/) | -|
 
 ## _Homework_
 - [x] [01-tools](/Labs/01-tools) 
