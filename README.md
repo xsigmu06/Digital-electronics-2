@@ -26,6 +26,7 @@ block comment
 //•	&	… bitwise AND
 //•	^	… bitwise XOR
 //•	~	… bitwise COMPLEMENT (NEGATION)
+//• << … bitwise left shift
 
 
 ```
