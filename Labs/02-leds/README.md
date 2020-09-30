@@ -2,7 +2,7 @@
 
 Draw two basic ways to connect a LED to the output pin of the microcontroller: LED active-low, LED active-high. What is the name of the LED pin that is connected to the microcontroller in each case?
 
-![Active high, low](Images/leds.png)
+![Active high, active low LEDS](Images/leds.png)
 
 [Calculate LED resistor value](https://electronicsclub.info/leds.htm) for typical red and blue LEDs.
 
