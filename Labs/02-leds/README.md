@@ -4,6 +4,9 @@ Draw two basic ways to connect a LED to the output pin of the microcontroller: L
 
 ![Active high, active low LEDS](Images/leds.png)
 
+H - anode connected to microcontroller
+L - cathode connected to microcontroller
+
 [Calculate LED resistor value](https://electronicsclub.info/leds.htm) for typical red and blue LEDs.
 
 &nbsp;
