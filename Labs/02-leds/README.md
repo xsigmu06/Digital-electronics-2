@@ -26,17 +26,7 @@ R = \frac{V_{SUPPLY}-V_{LED}}{I} =
 
 Draw the basic ways to connect a push button to the microcontroller input pin: button active-low, button active-high.
 
-&nbsp;
-
-&nbsp;
-
-&nbsp;
-
-&nbsp;
-
-&nbsp;
-
-&nbsp;
+![Active high, active low BUTTONS](Images/btns.png)
 
 ## Part 2: Active-low and active-high LEDs
 
