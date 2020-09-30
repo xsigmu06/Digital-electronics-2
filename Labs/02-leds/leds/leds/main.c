@@ -10,8 +10,12 @@
  **********************************************************************/
 
 /* Defines -----------------------------------------------------------*/
-#define LED_GREEN   PB5     // AVR pin where green LED is connected
-#define LED_RED     PC0
+//#define LED_GREEN   PB5     // AVR pin where green LED is connected
+#define LED_RED0     PC0
+#define LED_RED1     PC1
+#define LED_RED2     PC2
+#define LED_RED3     PC3
+#define LED_RED4     PC4
 #define BTN     PD0			// button
 #define BLINK_DELAY 250
 #ifndef F_CPU
@@ -27,36 +31,67 @@
  * Main function where the program execution begins. Toggle two LEDs 
  * when a push button is pressed.
  */
+void fce (int i)
+{
+	switch(i)
+	{
+		case 0:
+			PORTC = PORTC ^ (1<<LED_RED0);
+			break;
+		case 1:
+			PORTC = PORTC ^ (1<<LED_RED0);
+			PORTC = PORTC ^ (1<<LED_RED1);
+			break;
+		case 2:
+			PORTC = PORTC ^ (1<<LED_RED1);
+			PORTC = PORTC ^ (1<<LED_RED2);
+			break;
+		case 3:
+			PORTC = PORTC ^ (1<<LED_RED2);
+			PORTC = PORTC ^ (1<<LED_RED3);
+			break;
+		case 4:
+			PORTC = PORTC ^ (1<<LED_RED3);
+			PORTC = PORTC ^ (1<<LED_RED4);
+			break;
+		default:
+			PORTC = PORTC ^ (1<<LED_RED0);
+	}
+}
+
 int main(void)
 {
-    /* GREEN LED */
-    // Set pin as output in Data Direction Register...
-    DDRB = DDRB | (1<<LED_GREEN);							// | (1 ...vystup
-    // ...and turn LED off in Data Register
-    PORTB = PORTB & ~(1<<LED_GREEN);
-
-    /* second (RED) LED */
-    DDRC = DDRC | (1<<LED_RED);
-	PORTC = PORTC & ~(1<<LED_RED);							//PORTC = PORTC | ~(1<<LED_RED); ... blik soucasne
+    /* RED LEDs */
+    DDRC = DDRC | (1<<LED_RED0);
+    PORTC = PORTC & ~(1<<LED_RED0);
+	DDRC = DDRC | (1<<LED_RED1);
+	PORTC = PORTC & ~(1<<LED_RED1);
+	DDRC = DDRC | (1<<LED_RED2);
+	PORTC = PORTC & ~(1<<LED_RED2);
+	DDRC = DDRC | (1<<LED_RED3);
+	PORTC = PORTC & ~(1<<LED_RED3);
+	DDRC = DDRC | (1<<LED_RED4);
+	PORTC = PORTC & ~(1<<LED_RED4);						
 	
 	/* BUTTON */
 	DDRD = DDRD & ~(1<<BTN);								// & ~(1 ...vstup
-	PORTD = PORTD | (1<<BTN);							
-
+	PORTD = PORTD | (1<<BTN);					
     // Infinite loop
     while (1)
     {
-        // Pause several milliseconds
-        _delay_ms(BLINK_DELAY);
-		
 		if(bit_is_clear(PIND, BTN))								// je tlacitko v 1? -> clear... aktivni nula
-		{			
-			// WRITE YOUR CODE HERE
-			PORTB = PORTB ^ (1<<LED_GREEN);
-			PORTC = PORTC ^ (1<<LED_RED);
+		{		
+			for(int i = 0; i <= 4; i++)
+			{
+				_delay_ms(BLINK_DELAY);
+				fce(i);
+			}
+			for(int i = 4; i >= 0; i--)
+			{
+				_delay_ms(BLINK_DELAY);
+				fce(i);
+			}
 		}
     }
-
-    // Will never reach this
     return 0;
 }
