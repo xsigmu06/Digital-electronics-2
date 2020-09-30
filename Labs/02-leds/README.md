@@ -48,12 +48,12 @@ Use the datasheet to find out the meaning of the DDRB and PORTB control register
 | **PORTB** | **Description** |
 | :-: | :-- |
 | 0 | Output low value |
-| 1 | |
+| 1 | Output high value|
 
 | **DDRB** | **PORTB** | **Direction** | **Internal pull-up resistor** | **Description** |
 | :-: | :-: | :-: | :-: | :-- |
 | 0 | 0 | input | no | Tri-state, high-impedance |
-| 0 | 1 | input| yes |  |
+| 0 | 1 | input| depends on PUD | depends on PUD |
 | 1 | 0 | output | no | output low |
 | 1 | 1 | output | no | output high |
 
