@@ -44,7 +44,7 @@ uint16_t calculate(uint8_t x, uint8_t y)
     uint16_t result;    // result = x^2 + 2xy + y^2
 
     result = x*x;
-    result += 2*xy;
+    result += 2*x*y;
     result += y*y;
     return result;
 }
