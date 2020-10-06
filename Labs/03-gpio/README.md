@@ -21,7 +21,7 @@ Study [this article](https://www.programiz.com/c-programming/c-user-defined-func
 #include <avr/io.h>
 
 // Function declaration (prototype)
-uint16_t calculate(uint8_t, uint8_t );
+uint16_t calculate(uint8_t, uint8_t);
 
 int main(void)
 {
