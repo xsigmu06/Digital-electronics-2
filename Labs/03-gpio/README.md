@@ -11,7 +11,7 @@ Fill in the following table and enter the number of bits and numeric range for t
 | `uint16_t` | 16 | 0 ... 65535 | Unsigned 16-bit integer |
 | `int16_t`  | 16 | -32768 ... 32767 | Signed 16-bit integer |
 | `float`    | 32 | -3.4e+38, ..., 3.4e+38 | Single-precision floating-point |
-| `void`     | - | - | keyword for when the function has no return value |
+| `void`     | - | - | Keyword declaring that the function has no return value (no parameters) |
 
 Any function in C contains a declaration (function prototype), a definition (block of code, body of the function); each declared function can be executed (called).
 
@@ -21,7 +21,7 @@ Study [this article](https://www.programiz.com/c-programming/c-user-defined-func
 #include <avr/io.h>
 
 // Function declaration (prototype)
-uint16_t calculate(uint8_t, ...    );
+uint16_t calculate(uint8_t, uint8_t );
 
 int main(void)
 {
@@ -30,7 +30,7 @@ int main(void)
     uint16_t c;
 
     // Function call
-    c = ...      (a, b);
+    c = caclulate(a, b);
 
     while (1)
     {
@@ -39,13 +39,13 @@ int main(void)
 }
 
 // Function definition (body)
-...      calculate(uint8_t x, uint8_t y)
+uint16_t calculate(uint8_t x, uint8_t y)
 {
     uint16_t result;    // result = x^2 + 2xy + y^2
 
     result = x*x;
-    ...
-    ...
+    result += 2*xy;
+    result += y*y;
     return result;
 }
 ```
