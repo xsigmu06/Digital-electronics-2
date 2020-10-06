@@ -6,13 +6,14 @@
 | :-- | :-- |
 | [01-tools](/Labs/01-tools) | Git version-control system, AVR tools|   
 | [02-leds](/Labs/02-leds) | Control of GPIO, LED, push button|
-| [03-](/Labs/) | -|
+| [03-gpio](/Labs/03-gpio) | User library for GPIO control |
+| [04-](/Labs/) | ... |
 
 ## _Homework_
-- [x] [01-tools](/Labs/01-tools) 
-- [ ] [01-tools](/Labs/01-tools) used code to [C cheatsheet](#c-cheatsheet).
-- [ ] Push commits to GitHub
-- [ ] [02-](/Labs/)
+- [x] [01-hw](/Labs/01-tools)
+- [x] [02-hw](/Labs/02-leds)
+- [ ] [03-hw](/Labs/03-gpio)
+- [ ] [04-hw]
 
 ## C-cheatsheet
 
