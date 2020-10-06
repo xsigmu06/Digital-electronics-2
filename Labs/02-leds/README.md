@@ -1,4 +1,4 @@
-#Lab 2: Control of GPIO, LED, push button
+# Lab 2: Control of GPIO, LED, push button
 
 ## Preparation tasks (done before the lab at home)
 
