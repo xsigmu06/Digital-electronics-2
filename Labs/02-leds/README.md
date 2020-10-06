@@ -55,9 +55,10 @@ Use the datasheet to find out the meaning of the DDRB and PORTB control register
 | **DDRB** | **PORTB** | **Direction** | **Internal pull-up resistor** | **Description** |
 | :-: | :-: | :-: | :-: | :-- |
 | 0 | 0 | input | no | Tri-state, high-impedance |
-| 0 | 1 | input| depends on PUD | depends on PUD |
+| 0 | 1 | input| depends on PUD | pull-up resistor activation |
 | 1 | 0 | output | no | output low |
 | 1 | 1 | output | no | output high |
+PUD ...  can be set to disable all pull-ups in all ports (0 -> pull up, 1 -> Hi-z)
 
 See [schematic of Arduino Uno board](../../Docs/arduino_shield.pdf) in docs folder of Digital-electronics-2 repository and find out which pins of ATmega328P can be used as input/output pins. To which pin is the LED L connected? Is it connected as active-low or active-high?
 
@@ -88,5 +89,5 @@ See [schematic of Arduino Uno board](../../Docs/arduino_shield.pdf) in docs fold
 |   | 5 | Yes (Arduino pin ~5) |
 |   | 6 | Yes (Arduino pin ~6) |
 |   | 7 | Yes (Arduino pin 7) |
-
+~ ... a PWM (Pulse-width modulation) signal can be generated on these pins
 
