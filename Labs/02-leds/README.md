@@ -83,7 +83,7 @@ See [schematic of Arduino Uno board](../../Docs/arduino_shield.pdf) in docs fold
 |   | 6 | No ... reset|
 |   | 7 | Microcontroller ATmega328P does not contain port PC7 |
 | D | 0 | Yes (Arduino pin RX<-0) |
-|   | 1 | Yes (Arduino pin TX->0) |
+|   | 1 | Yes (Arduino pin TX->1) |
 |   | 2 | Yes (Arduino pin 2) |
 |   | 3 | Yes (Arduino pin ~3) |
 |   | 4 | Yes (Arduino pin 4) |
