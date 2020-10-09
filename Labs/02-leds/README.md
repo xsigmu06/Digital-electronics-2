@@ -92,4 +92,4 @@ See [schematic of Arduino Uno board](../../Docs/arduino_shield.pdf) in docs fold
 |   | 7 | Yes (Arduino pin 7) |
 
 * ~ ... a PWM (Pulse-width modulation) signal can be generated on these pins
-
+* LED L - pin PB5, active high
