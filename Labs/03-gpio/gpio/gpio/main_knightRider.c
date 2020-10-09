@@ -62,8 +62,7 @@ int main(void)
 
 		if(!GPIO_read(&PIND, BTN))			// active low BTN, but IF needs 1 to work -> ! ... not
 		{
-			GPIO_toggle(&PORTB, LED_GREEN);
-			GPIO_toggle(&PORTC, LED_RED);
+			GPIO_toggle(&PORTC, LED0);
 		}
     }
 

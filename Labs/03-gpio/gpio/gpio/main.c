@@ -38,7 +38,7 @@ int main(void)
 
     /* RED LED */
 	GPIO_config_output(&DDRC, LED_RED);
-    GPIO_write_high(&PORTC, LED_RED);
+    GPIO_write_low(&PORTC, LED_RED);
 	
     /* push button */
     GPIO_config_input_pullup(&DDRD, BTN);
