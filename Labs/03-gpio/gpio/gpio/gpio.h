@@ -1,5 +1,5 @@
-#ifndef GPIO_H
-#define GPIO_H
+#ifndef GPIO_H	// Preprocessor directive allows for conditional compilation. If not defined.
+#define GPIO_H	// Definition of constant within your source code.
 
 /***********************************************************************
  * 
@@ -52,4 +52,4 @@ void GPIO_toggle(volatile uint8_t *reg_name, uint8_t pin_num);
 
 uint8_t GPIO_read(volatile uint8_t *reg_name, uint8_t pin_num);
 
-#endif
+#endif	// The #ifndef directive must be closed by an #endif
