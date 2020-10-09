@@ -11,8 +11,11 @@
  **********************************************************************/
 
 /* Defines -----------------------------------------------------------*/
-#define LED_GREEN   PB5     // AVR pin where green LED is connected
-#define LED_RED		PC0
+#define LED0		PC0     // AVR pin where LED0 is connected
+#define LED1		PC1
+#define LED2		PC2
+#define LED3		PC3
+#define LED4		PC4
 #define BTN			PD0
 #define BLINK_DELAY 500
 #ifndef F_CPU
@@ -32,13 +35,21 @@
  */
 int main(void)
 {
-    /* GREEN LED */
-    GPIO_config_output(&DDRB, LED_GREEN);
-    GPIO_write_low(&PORTB, LED_GREEN);
-
-    /* RED LED */
-	GPIO_config_output(&DDRC, LED_RED);
-    GPIO_write_high(&PORTC, LED_RED);
+    /* LED 0 */
+    GPIO_config_output(&DDRC, LED0);
+    GPIO_write_low(&PORTC, LED0);
+	
+    GPIO_config_output(&DDRC, LED1);
+    GPIO_write_low(&PORTC, LED1);
+	
+    GPIO_config_output(&DDRC, LED2);
+    GPIO_write_low(&PORTC, LED2);
+	
+    GPIO_config_output(&DDRC, LED0);
+    GPIO_write_low(&PORTC, LED0);
+	
+    GPIO_config_output(&DDRC, LED0);
+    GPIO_write_low(&PORTC, LED0);
 	
     /* push button */
     GPIO_config_input_pullup(&DDRD, BTN);
