@@ -31,33 +31,6 @@
  * Main function where the program execution begins. Toggle two LEDs 
  * when a push button is pressed.
  */
-void knightRider (int i)
-{
-	switch(i)
-	{
-		case 0:
-			PORTC = PORTC ^ (1<<LED_RED0);
-			break;
-		case 1:
-			PORTC = PORTC ^ (1<<LED_RED0);
-			PORTC = PORTC ^ (1<<LED_RED1);
-			break;
-		case 2:
-			PORTC = PORTC ^ (1<<LED_RED1);
-			PORTC = PORTC ^ (1<<LED_RED2);
-			break;
-		case 3:
-			PORTC = PORTC ^ (1<<LED_RED2);
-			PORTC = PORTC ^ (1<<LED_RED3);
-			break;
-		case 4:
-			PORTC = PORTC ^ (1<<LED_RED3);
-			PORTC = PORTC ^ (1<<LED_RED4);
-			break;
-		default:
-			PORTC = PORTC ^ (1<<LED_RED0);
-	}
-}
 
 int main(void)
 {
@@ -66,7 +39,7 @@ int main(void)
     PORTC = PORTC & ~(1<<LED_RED0) & ~(1<<LED_RED1) & ~(1<<LED_RED2) & ~(1<<LED_RED3) & ~(1<<LED_RED4);				
 	
 	/* BUTTON */
-	DDRD = DDRD & ~(1<<BTN);								// & ~(1 ...vstup
+	DDRD = DDRD & ~(1<<BTN);								// & ~(1 ...input
 	PORTD = PORTD | (1<<BTN);	
 	
 	uint8_t i = 0;
@@ -74,20 +47,18 @@ int main(void)
     // Infinite loop
     while (1)
     {
-		if(bit_is_clear(PIND, BTN))								// je tlacitko v 1? -> clear... aktivni nula
+		if(bit_is_clear(PIND, BTN))							// button pressed, high value on PIND is grounded -> 0 (active low)
 		{		
 			PORTC = PORTC | (1<<LED_RED0);
 			for(i = 0; i < 4; i++)
 			{
 				PORTC = PORTC<<1;
 				_delay_ms(BLINK_DELAY);
-				//knightRider(i);
 			}
 			for(i = 4; i > 0; i--)
 			{
 				PORTC = PORTC>>1;
 				_delay_ms(BLINK_DELAY);
-				//knightRider(i);
 			}
 		}
 		else
