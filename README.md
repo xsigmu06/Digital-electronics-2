@@ -12,7 +12,7 @@
 ## _Homework_
 - [x] [01-hw](/Labs/01-tools)
 - [x] [02-hw](/Labs/02-leds)
-- [ ] [03-hw](/Labs/03-gpio)
+- [x] [03-hw](/Labs/03-gpio)
 - [ ] [04-hw]
 
 ## C-cheatsheet
