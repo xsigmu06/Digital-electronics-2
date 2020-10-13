@@ -1,51 +1,19 @@
-# Lab 3: User library for GPIO control
+# Lab 4: Interrupts, timers
 
 ## Preparation tasks (done before the lab at home)
 
-Fill in the following table and enter the number of bits and numeric range for the selected data types defined by C.
+Consider an n-bit number that we increment based on the clock signal. If we reach its maximum value and try to increase it, the value will be reset. We call this state an overflow. The overflow time depends on the frequency of the clock signal, the number of bits, and on the prescaler value:
 
-| **Data type** | **Number of bits** | **Range** | **Description** |
-| :-: | :-: | :-: | :-- | 
-| `uint8_t`  | 8 | 0, 1, ..., 255 | Unsigned 8-bit integer |
-| `int8_t`   | 8 | -128 ... 127 | Signed 8-bit integer |
-| `uint16_t` | 16 | 0 ... 65535 | Unsigned 16-bit integer |
-| `int16_t`  | 16 | -32768 ... 32767 | Signed 16-bit integer |
-| `float`    | 32 | -3.4e+38, ..., 3.4e+38 | Single-precision floating-point |
-| `void`     | - | - | Keyword declaring that the function has no return value (no parameters) |
+&nbsp;
+![Timer overflow](Images/timer_overflow.png)
+&nbsp;
 
-Any function in C contains a declaration (function prototype), a definition (block of code, body of the function); each declared function can be executed (called).
+Calculate the overflow times for three Timer/Counter modules that contain ATmega328P if CPU clock frequency is 16&nbsp;MHz. Complete the following table for given prescaler values. Note that, Timer/Counter2 is able to set 7 prescaler values, including 32 and 128.
 
-Study [this article](https://www.programiz.com/c-programming/c-user-defined-functions) and complete the missing sections in the following user defined function declaration, definition, and call.
+| **Module** | **Number of bits** | **1** | **8** | **32** | **64** | **128** | **256** | **1024** |
+| :-: | :-: | :-: | :-: | :-: | :-: | :-: | :-: | :-: |
+| Timer/Counter0 | 8  | 16u | 128u | -- | | -- | | |
+| Timer/Counter1 | 16 |     |      | -- | | -- | | |
+| Timer/Counter2 | 8  |     |      |    | |    | | |
 
-```C
-#include <avr/io.h>
-
-// Function declaration (prototype)
-uint16_t calculate(uint8_t, uint8_t);
-
-int main(void)
-{
-    uint8_t a = 156;
-    uint8_t b = 14;
-    uint16_t c;
-
-    // Function call
-    c = caclulate(a, b);
-
-    while (1)
-    {
-    }
-    return 0;
-}
-
-// Function definition (body)
-uint16_t calculate(uint8_t x, uint8_t y)
-{
-    uint16_t result;    // result = x^2 + 2xy + y^2
-
-    result = x*x;
-    result += 2*x*y;
-    result += y*y;
-    return result;
-}
-```
+Shields are boards that can be attached to an Arduino board, significantly expand its capabilities, and makes prototyping much faster. See schematic of [Multi-function shield](../../Docs/arduino_shield.pdf) and find out the connection of four LEDs (D1, D2, D3, D4) and three push buttons (S1-A1, S2-A2, S3-A3).
