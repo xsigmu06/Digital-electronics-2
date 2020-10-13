@@ -12,8 +12,8 @@ Calculate the overflow times for three Timer/Counter modules that contain ATmega
 
 | **Module** | **Number of bits** | **1** | **8** | **32** | **64** | **128** | **256** | **1024** |
 | :-: | :-: | :-: | :-: | :-: | :-: | :-: | :-: | :-: |
-| Timer/Counter0 | 8  | 16u | 128u | -- | | -- | | |
-| Timer/Counter1 | 16 |     |      | -- | | -- | | |
-| Timer/Counter2 | 8  |     |      |    | |    | | |
+| Timer/Counter0 | 8  | 16u | 128u | -- | 1024u | -- | 2048u | 16,384m |
+| Timer/Counter1 | 16 | 4096u | 32,768m | -- | 0,262 | -- | 1,049 | 4,194 |
+| Timer/Counter2 | 8  | 16u | 128u | 512u | 1024u | 2048u | 4096u | 16,384m |
 
 Shields are boards that can be attached to an Arduino board, significantly expand its capabilities, and makes prototyping much faster. See schematic of [Multi-function shield](../../Docs/arduino_shield.pdf) and find out the connection of four LEDs (D1, D2, D3, D4) and three push buttons (S1-A1, S2-A2, S3-A3).
