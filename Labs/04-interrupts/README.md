@@ -54,3 +54,21 @@ See the [ATmega328P datasheet](https://www.microchip.com/wwwproducts/en/ATmega32
 | 0x0030 | TWI | `TWI_vect` | 2-wire Serial Interface |
 
 All interrupts are disabled by default. If you want to use them, you must first enable them individually in specific control registers and then enable them centrally with the `sei()` command (Set interrupt). You can also centrally disable all interrupts with the `cli()` command (Clear interrupt).
+
+Use schematic of [Arduino Uno](https://github.com/tomas-fryza/Digital-electronics-2/blob/master/Docs/arduino_shield.pdf) board or [ATmega328P datasheet](https://www.microchip.com/wwwproducts/en/ATmega328p) and in the following table write which Arduino Uno pins can be used to generate the PWM signal by internal timer modules.
+
+| **Module** | **Description** | **MCU pin** | **Arduino pin** |
+| :-: | :-: | :-: | :-: |
+| Timer/Counter0 | OC0A |     |    |
+|                | OC0B |     |    |
+| Timer/Counter1 | OC1A |     |    |
+|                | OC1B | PB2 | 10 |
+| Timer/Counter2 | OC2A |     |    |
+|                | OC2B |     |    |
+
+
+2. Use the [ATmega328P datasheet](https://www.microchip.com/wwwproducts/en/ATmega328p) (section **8-bit Timer/Counter0 with PWM > Modes of Operation**) to find the main differences between:
+   * Normal mode,
+   * Clear Timer on Compare mode,
+   * Fast PWM mode, and
+   * Phase Correct PWM Mode.
