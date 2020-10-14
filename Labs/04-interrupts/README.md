@@ -12,9 +12,9 @@ Calculate the overflow times for three Timer/Counter modules that contain ATmega
 
 | **Module** | **Number of bits** | **1** | **8** | **32** | **64** | **128** | **256** | **1024** |
 | :-: | :-: | :-: | :-: | :-: | :-: | :-: | :-: | :-: |
-| Timer/Counter0 | 8  | 16u | 128u | -- | 1,024m | -- | 2,048m | 16,384m |
-| Timer/Counter1 | 16 | 4,096m | 32,768m | -- | 0,262 | -- | 1,049 | 4,194 |
-| Timer/Counter2 | 8  | 16u | 128u | 512u | 1,024m | 2,048m | 4,096m | 16,384m |
+| Timer/Counter0 | 8  | 16u | 128u | -- | 1,024m | -- | 2m | 16m |
+| Timer/Counter1 | 16 | 4m | 32,7m | -- | 0,26 | -- | 1,05 | 4,19 |
+| Timer/Counter2 | 8  | 16u | 128u | 0,51m | 1m | 2m | 4m | 16m |
 
 Shields are boards that can be attached to an Arduino board, significantly expand its capabilities, and makes prototyping much faster. See schematic of [Multi-function shield](../../Docs/arduino_shield.pdf) and find out the connection of four LEDs (D1, D2, D3, D4) and three push buttons (S1-A1, S2-A2, S3-A3).
 
@@ -26,7 +26,7 @@ The timer modules can be configured with several special purpose registers. Acco
 
 | **Module** | **Operation** | **I/O register(s)** | **Bit(s)** |
 | :-: | :-- | :-: | :-- |
-| Timer/Counter0 | Prescaler<br><br>8-bit data value<br>Overflow interrupt enable | <br><br><br> | <br><br><br> |
+| Timer/Counter0 | Prescaler<br><br>8-bit data value<br>Overflow interrupt enable | TCCR0B<br><br>TCNT1H, | <br><br><br> |
 | Timer/Counter1 | Prescaler<br><br>16-bit data value<br>Overflow interrupt enable | TCCR1B<br><br>TCNT1H, TCNT1L<br>TIMSK1 | CS12, CS11, CS10<br>(000: stopped, 001: 1, 010: 8, 011: 64, 100: 256, 101: 1024)<br>TCNT1[15:0]<br>TOIE1 (1: enable, 0: disable) |
 | Timer/Counter2 | Prescaler<br><br>8-bit data value<br>Overflow interrupt enable | <br><br><br> | <br><br><br> |
 
@@ -40,17 +40,17 @@ See the [ATmega328P datasheet](https://www.microchip.com/wwwproducts/en/ATmega32
 | :-: | :-- | :-- | :-- |
 | 0x0000 | RESET | -- | Reset of the system |
 | 0x0002 | INT0  | `INT0_vect`&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; | External interrupt request number 0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; |
-|  | INT1 |  |  |
-|  | PCINT0 |  |  |
-|  | PCINT1 |  |  |
-|  | PCINT2 |  |  |
-|  | WDT |  |  |
-|  | TIMER2_OVF |  |  |
+| 0x0004 | INT1 |  | External Interrupt Request 1 |
+| 0x0006 | PCINT0 |  | Pin Change Interrupt Request 0 |
+| 0x0008 | PCINT1 |  | Pin Change Interrupt Request 1 |
+| 0x000A | PCINT2 |  | Pin Change Interrupt Request 2 |
+| 0x000C | WDT |  | Watchdog Time-out Interrupt |
+| 0x0012 | TIMER2_OVF |  | Timer/Counter2 Overflow |
 | 0x0018 | TIMER1_COMPB | `TIMER1_COMPB_vect` | Compare match between Timer/Counter1 value and channel B compare value |
 | 0x001A | TIMER1_OVF | `TIMER1_OVF_vect` | Overflow of Timer/Counter1 value |
-|  | TIMER0_OVF |  |  |
-|  | USART_RX |  |  |
-|  | ADC |  |  |
-|  | TWI |  |  |
+| 0x0020 | TIMER0_OVF |  | Timer/Counter0 Overflow |
+| 0x0024 | USART_RX |  | USART Rx Complete |
+| 0x002A | ADC |  | ADC Conversion Complete |
+| 0x0030 | TWI |  | 2-wire Serial Interface |
 
 All interrupts are disabled by default. If you want to use them, you must first enable them individually in specific control registers and then enable them centrally with the `sei()` command (Set interrupt). You can also centrally disable all interrupts with the `cli()` command (Clear interrupt).
