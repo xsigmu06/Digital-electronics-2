@@ -12,9 +12,9 @@ Calculate the overflow times for three Timer/Counter modules that contain ATmega
 
 | **Module** | **Number of bits** | **1** | **8** | **32** | **64** | **128** | **256** | **1024** |
 | :-: | :-: | :-: | :-: | :-: | :-: | :-: | :-: | :-: |
-| Timer/Counter0 | 8  | 16u | 128u | -- | 1,024m | -- | 2m | 16m |
-| Timer/Counter1 | 16 | 4m | 32,7m | -- | 0,26 | -- | 1,05 | 4,19 |
-| Timer/Counter2 | 8  | 16u | 128u | 0,51m | 1m | 2m | 4m | 16m |
+| Timer/Counter0 | 8  | 16u | 128u | -- | 1m | -- | 2m | 16m |
+| Timer/Counter1 | 16 | 4m | 33m | -- | 0,3 | -- | 1,1 | 4,2 |
+| Timer/Counter2 | 8  | 16u | 128u | 0,5m | 1m | 2m | 4m | 16m |
 
 Shields are boards that can be attached to an Arduino board, significantly expand its capabilities, and makes prototyping much faster. See schematic of [Multi-function shield](../../Docs/arduino_shield.pdf) and find out the connection of four LEDs (D1, D2, D3, D4) and three push buttons (S1-A1, S2-A2, S3-A3).
 
@@ -39,7 +39,7 @@ See the [ATmega328P datasheet](https://www.microchip.com/wwwproducts/en/ATmega32
 | **Program address** | **Source** | **Vector name** | **Description** |
 | :-: | :-- | :-- | :-- |
 | 0x0000 | RESET | -- | Reset of the system |
-| 0x0002 | INT0  | `INT0_vect`&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; | External interrupt request number 0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; |
+| 0x0002 | INT0  | `INT0_vect` | External interrupt request number 0 |
 | 0x0004 | INT1 |  | External Interrupt Request 1 |
 | 0x0006 | PCINT0 |  | Pin Change Interrupt Request 0 |
 | 0x0008 | PCINT1 |  | Pin Change Interrupt Request 1 |
