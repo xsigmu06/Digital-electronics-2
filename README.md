@@ -8,7 +8,7 @@
 | [02-leds](/Labs/02-leds) | Control of GPIO, LED, push button|
 | [03-gpio](/Labs/03-gpio) | User library for GPIO control |
 | [04-interrupts](/Labs/04-interrupts) | Interrupts, timers |
-| [05-](/Labs/05-segment) | Display devices, 7-segment display |
+| [05-segment](/Labs/05-segment) | Display devices, 7-segment display |
 | [06-](/Labs/) | ... |
 
 ## _Homework_
