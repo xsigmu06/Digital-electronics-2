@@ -11,7 +11,7 @@ Fill in the following table and enter the number of bits and numeric range for t
 | `uint16_t` | 16 | 0 ... 65535 | Unsigned 16-bit integer |
 | `int16_t`  | 16 | -32768 ... 32767 | Signed 16-bit integer |
 | `float`    | 32 | -3.4e+38, ..., 3.4e+38 | Single-precision floating-point |
-| `void`     | - | - | Keyword declaring that the function has no return value (no parameters) |
+| `void`     | 8 | - | Keyword declaring that the function has no return value (no parameters) |
 
 Any function in C contains a declaration (function prototype), a definition (block of code, body of the function); each declared function can be executed (called).
 
