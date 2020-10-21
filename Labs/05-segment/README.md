@@ -32,10 +32,3 @@ According to the [ATmega328P datasheet](https://www.microchip.com/wwwproducts/en
 | Pin Change Interrupt 0 | `PCINT0_vect` | PB[7:0] | Interrupt enable<br>Select pins | PCICR<br>PCMSK0 | PCIE0<br>PCINT[7:0] |
 | Pin Change Interrupt 1 | `PCINT1_vect`|  | Interrupt enable<br>Select pins | <br> | <br> |
 | Pin Change Interrupt 2 | `PCINT2_vect`|  | Interrupt enable<br>Select pins | <br> | <br> |
-
-| **Return** | **Function name** | **Function parameters** | **Description** |
-| :-: | :-- | :-- | :-- |
-| `void` | `SEG_init` | `void` | Configure SSD signals LATCH, CLK, and DATA as output |
-| `void` | `SEG_update_shift_regs` | `uint8_t segments, uint8_t position` | Display segments at one position of the SSD |
-| `void` | `SEG_clear` | `void` | Turn off all segments at all positions of the SSD |
-| `void` | `SEG_clk_2us` | `void` | Generate one CLK signal period with a duration of 2&nbsp;us |
