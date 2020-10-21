@@ -28,3 +28,12 @@ In the following table, write the binary values of the segments for display 0 to
 Use schematic of the [Multi-function shield](../../Docs/arduino_shield.pdf) and find out the connection of seven-segment display. What is the purpose of two shift registers 74HC595?
 - first one is choosing one of the four 7-segment
 - second one is choosing invidividual segments and decimal point
+
+Study the function prototypes and macro defines in the `segment.h` header file.
+
+| **Return** | **Function name** | **Function parameters** | **Description** |
+| :-: | :-- | :-- | :-- |
+| `void` | `SEG_init` | `void` | Configure SSD signals LATCH, CLK, and DATA as output |
+| `void` | `SEG_update_shift_regs` | `uint8_t segments, uint8_t position` | Display segments at one position of the SSD |
+| `void` | `SEG_clear` | `void` | Turn off all segments at all positions of the SSD |
+| `void` | `SEG_clk_2us` | `void` | Generate one CLK signal period with a duration of 2&nbsp;us |
