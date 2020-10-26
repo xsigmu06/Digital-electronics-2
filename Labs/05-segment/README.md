@@ -1,4 +1,4 @@
-# Lab 4: Display devices, 7-segment display
+# Lab 5: Display devices, 7-segment display
 
 ## Preparation tasks (done before the lab at home)
 
