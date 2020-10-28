@@ -16,7 +16,7 @@
 - [x] [02-hw](/Labs/02-leds)
 - [x] [03-hw](/Labs/03-gpio)
 - [x] [04-hw](/Labs/04-interrupts)
-- [ ] [05-hw](/Labs/05-segment)
+- [x] [05-hw](/Labs/05-segment)
 - [ ] [06-hw]
 
 ## C-cheatsheet
