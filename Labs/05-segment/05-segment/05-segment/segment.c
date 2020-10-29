@@ -107,7 +107,7 @@ void SEG_update_shift_regs(uint8_t segments, uint8_t position, bool DP)
     for (bit_number = 0; bit_number < 8; bit_number++)
     {
         // Output DATA value (bit 0 of "position")
-		//zpusob 2: AND ... efektivnejsi (rychlejsi operace nez zbytek po deleni)
+        //zpusob 2: AND ... efektivnejsi (rychlejsi operace nez zbytek po deleni)
 		if((position & 1) == 0)
 		{
 			GPIO_write_low(&PORTB, SEGMENT_DATA);
@@ -116,7 +116,7 @@ void SEG_update_shift_regs(uint8_t segments, uint8_t position, bool DP)
 		{
 			GPIO_write_high(&PORTB, SEGMENT_DATA);
 		}
-
+        
         SEG_clk_2us();
 		
         // Shift "position"
@@ -148,10 +148,10 @@ void SEG_clear(void)
 		SEG_clk_2us();
 	}
 	 // Pull LATCH high
-	 GPIO_write_high(&PORTD, SEGMENT_LATCH);
+    GPIO_write_high(&PORTD, SEGMENT_LATCH);
 	 
 	 // Wait 1 us
-	 _delay_us(1);
+    _delay_us(1);
 }
 
 /*--------------------------------------------------------------------*/
