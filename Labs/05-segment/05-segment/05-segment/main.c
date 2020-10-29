@@ -35,7 +35,7 @@ int main(void)
     //SEG_update_shift_regs(4, 1, 1);
 
 	
-	// Configure 8-bit Timer/Counter0
+    // Configure 8-bit Timer/Counter0
 	TIM0_overflow_4ms();
 	TIM0_overflow_interrupt_enable();
 	
