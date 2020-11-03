@@ -14,8 +14,8 @@ Use schematic of the [LCD keypad shield](../../Docs/arduino_shield.pdf) and find
 
 What is the ASCII table? What are the values for uppercase letters `A` to `Z`, lowercase letters `a` to `z`, and numbers `0` to `9` in this table?
 
-   ASCII (American Standard Code) - character encoding standard for electronic communication
-   `A` to `Z` ... 65 to 90 (decimal)
-   `a` to `z` ... 97 to 122 (decimal)
-   `0` to `9` ... 48 to 57 (decimal)
-   https://www.asciitable.com/
+   - ASCII (American Standard Code) - character encoding standard for electronic communication
+   - `A` to `Z` ... 65 to 90 (decimal)
+   - `a` to `z` ... 97 to 122 (decimal)
+   - `0` to `9` ... 48 to 57 (decimal)
+   - https://www.asciitable.com/
