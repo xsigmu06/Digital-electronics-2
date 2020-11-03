@@ -9,7 +9,7 @@
 | [03-gpio](/Labs/03-gpio) | User library for GPIO control |
 | [04-interrupts](/Labs/04-interrupts) | Interrupts, timers |
 | [05-segment](/Labs/05-segment) | Display devices, 7-segment display |
-| [06-](/Labs/) | ... |
+| [06-lcd](/Labs/06-lcd) | Display devices, LCD display |
 
 ## _Homework_
 - [x] [01-hw](/Labs/01-tools)
