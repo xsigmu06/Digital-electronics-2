@@ -147,10 +147,10 @@ void SEG_clear(void)
 		
 		SEG_clk_2us();
 	}
-	 // Pull LATCH high
+    // Pull LATCH high
     GPIO_write_high(&PORTD, SEGMENT_LATCH);
 	 
-	 // Wait 1 us
+    // Wait 1 us
     _delay_us(1);
 }
 
