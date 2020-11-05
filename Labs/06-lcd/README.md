@@ -28,8 +28,8 @@ In the lab, we are using [LCD library for HD44780 based LCDs](http://www.peterfl
    | :-- | :-- | :-- | :-- |
    | `lcd_init` | `LCD_DISP_OFF`<br>`LCD_DISP_ON`<br>`LCD_DISP_ON_CURSOR`<br>`LCD_DISP_ON_CURSOR_BLINK` | Display off&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>&nbsp;<br>&nbsp;<br>&nbsp; | `lcd_init(LCD_DISP_OFF);`<br>&nbsp;<br>&nbsp;<br>&nbsp; |
    | `lcd_clrscr` |none | Clear display and set cursor to home position. | `lcd_clrscr();` |
-   | `lcd_gotoxy` | `x horizontal position(0: left most position)` <br> `y	vertical position(0: first line)`| Set cursor to specified position. | lcd_gotoxy(x,y) |
-   | `lcd_putc` | `c	character to be displayed` | Display character at current cursor position. | lcd_putc(c) |
-   | `lcd_puts` | `s	string to be displayed` | Display string without auto linefeed. | lcd_puts(s) |
-   | `lcd_command` | `cmd instruction to send to LCD controller, see HD44780 data sheet` | Send LCD controller instruction command. | lcd_command(cmd) |
-   | `lcd_data` | `data	byte to send to LCD controller, see HD44780 data sheet` | Send data byte to LCD controller. | lcd_data(data) |
+   | `lcd_gotoxy` | `x` horizontal position(0: left most position) <br> `y`	vertical position(0: first line)| Set cursor to specified position. | `lcd_gotoxy(x,y)` |
+   | `lcd_putc` | `c`	character to be displayed | Display character at current cursor position. | `lcd_putc(c)` |
+   | `lcd_puts` | `s`	string to be displayed | Display string without auto linefeed. | `lcd_puts(s)` |
+   | `lcd_command` | `cmd` instruction to send to LCD controller, see HD44780 data sheet | Send LCD controller instruction command. | `lcd_command(cmd)` |
+   | `lcd_data` | `data`	byte to send to LCD controller, see HD44780 data sheet | Send data byte to LCD controller. | `lcd_data(data)` |
