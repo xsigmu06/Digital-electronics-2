@@ -10,6 +10,7 @@
 | [04-interrupts](/Labs/04-interrupts) | Interrupts, timers |
 | [05-segment](/Labs/05-segment) | Display devices, 7-segment display |
 | [06-lcd](/Labs/06-lcd) | Display devices, LCD display |
+| [07-uart](/Labs/07-uart) | ADC and UART serial communication |
 
 ## _Homework_
 - [x] [01-hw](/Labs/01-tools)
@@ -17,7 +18,8 @@
 - [x] [03-hw](/Labs/03-gpio)
 - [x] [04-hw](/Labs/04-interrupts)
 - [x] [05-hw](/Labs/05-segment)
-- [ ] [06-hw]
+- [x] [06-hw](/Labs/06-lcd)
+- [ ] [07-hw](/Labs/07-uart)
 
 ## C-cheatsheet
 
