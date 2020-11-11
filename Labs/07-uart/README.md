@@ -20,3 +20,25 @@ Calculate the ADC values for these voltages according to the following equation 
    | Left   | 1.970&nbsp;V | 390 |  |
    | Select | 3.182&nbsp;V | 651 |  |
    | none   | 5&nbsp;V | 1023 |  |
+   
+The operation with the AD converter is performed through ADMUX, ADCSRA, ADCL+ADCH, ADCSRB, and DIDR0 registers. See [ATmega328P datasheet](https://www.microchip.com/wwwproducts/en/ATmega328p) (**Analog-to-Digital Converter > Register Description**) and complete the following table.
+
+   | **Operation** | **Register(s)** | **Bit(s)** | **Description** |
+   | :-: | :-- | :-- | :-- |
+   | Voltage reference | ADMUX | REFS1:0 | 01: AVcc voltage reference, 5V |
+   | Input channel |  | MUX3:0 | 0000: ADC0, 0001: ADC1, ... |
+   | ADC enable | ADCSRA |  |  |
+   | Start conversion |  |  |  |
+   | ADC interrupt enable |  |  |  |
+   | ADC clock prescaler |  | ADPS2:0 | 000: Division factor 2, 001: 2, 010: 4, ...|
+   | ADC result |  |  |  |
+
+
+In the lab, we are using [UART library](http://www.peterfleury.epizy.com/avr-software.html) developed by Peter Fleury. Use online manual of UART library and add the input parameters and description of the functions to the following table.
+
+   | **Function name** | **Function parameters** | **Description** | **Example** |
+   | :-- | :-- | :-- | :-- |
+   | `uart_init` | `UART_BAUD_SELECT(9600, F_CPU)` | Initialize UART to 8N1 and set baudrate to 9600&nbsp;Bd | `uart_init(UART_BAUD_SELECT(9600, F_CPU));` |
+   | `uart_getc` |  |  |
+   | `uart_putc` |  |  |
+   | `uart_puts` |  |  |
