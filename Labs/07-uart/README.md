@@ -14,12 +14,12 @@ Calculate the ADC values for these voltages according to the following equation 
 
    | **Push button** | **PC0[A0] voltage** | **ADC value (calculated)** | **ADC value (measured)** |
    | :-: | :-: | :-: | :-: |
-   | Right  | 0&nbsp;V | 0   |  |
-   | Up     | 0.495&nbsp;V | 101 |  |
-   | Down   | 1.203&nbsp;V | 246 |  |
-   | Left   | 1.970&nbsp;V | 390 |  |
-   | Select | 3.182&nbsp;V | 651 |  |
-   | none   | 5&nbsp;V | 1023 |  |
+   | Right  | 0&nbsp;V | 0   | 1,667&nbsp;V  |
+   | Up     | 0.495&nbsp;V | 101 | 0.495&nbsp;V  |
+   | Down   | 1.203&nbsp;V | 246 | 1.203&nbsp;V  |
+   | Left   | 1.970&nbsp;V | 390 | 1.970&nbsp;V  |
+   | Select | 3.182&nbsp;V | 651 | 3.182&nbsp;V  |
+   | none   | 5&nbsp;V | 1023 | 5&nbsp;V  |
    
 The operation with the AD converter is performed through ADMUX, ADCSRA, ADCL+ADCH, ADCSRB, and DIDR0 registers. See [ATmega328P datasheet](https://www.microchip.com/wwwproducts/en/ATmega328p) (**Analog-to-Digital Converter > Register Description**) and complete the following table.
 
