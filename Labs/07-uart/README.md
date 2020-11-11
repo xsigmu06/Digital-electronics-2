@@ -26,11 +26,11 @@ The operation with the AD converter is performed through ADMUX, ADCSRA, ADCL+ADC
    | **Operation** | **Register(s)** | **Bit(s)** | **Description** |
    | :-: | :-- | :-- | :-- |
    | Voltage reference | ADMUX | REFS1:0 | 01: AVcc voltage reference, 5V |
-   | Input channel |  | MUX3:0 | 0000: ADC0, 0001: ADC1, ... |
-   | ADC enable | ADCSRA |  |  |
-   | Start conversion |  |  |  |
-   | ADC interrupt enable |  |  |  |
-   | ADC clock prescaler |  | ADPS2:0 | 000: Division factor 2, 001: 2, 010: 4, ...|
+   | Input channel | ADMUX | MUX3:0 | 0000: ADC0, 0001: ADC1, ... |
+   | ADC enable | ADCSRA | Bit 7 – ADEN: | 0: turned off |
+   | Start conversion | ADCSRA | Bit 6 – ADSC | 1: in Single to start each conversion, in Freerunning to start the first conv.; returns to 0 when conv. completed |
+   | ADC interrupt enable | ADCSRA | Bit 3 – ADIE | 1: activated, if 1-bit in SREG is set |
+   | ADC clock prescaler | ADCSRA | ADPS2:0 | 000: Division factor 2, 001: 2, 010: 4, ...|
    | ADC result |  |  |  |
 
 
