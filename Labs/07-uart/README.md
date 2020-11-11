@@ -39,6 +39,6 @@ In the lab, we are using [UART library](http://www.peterfleury.epizy.com/avr-sof
    | **Function name** | **Function parameters** | **Description** | **Example** |
    | :-- | :-- | :-- | :-- |
    | `uart_init` | `UART_BAUD_SELECT(9600, F_CPU)` | Initialize UART to 8N1 and set baudrate to 9600&nbsp;Bd | `uart_init(UART_BAUD_SELECT(9600, F_CPU));` |
-   | `uart_getc` |  |  |
-   | `uart_putc` |  |  |
-   | `uart_puts` |  |  |
+   | `uart_getc` | none | Get received byte from ringbuffer. | `uart_getc()` |
+   | `uart_putc` | `data` byte to be transmitted | Put byte to ringbuffer for transmitting via UART. | `uart_putc(data)` |
+   | `uart_puts` | `s`	string to be transmitted  | Put string to ringbuffer for transmitting via UART. | `uart_putc(s)` |
