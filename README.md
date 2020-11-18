@@ -11,7 +11,7 @@
 | [05-segment](/Labs/05-segment) | Display devices, 7-segment display |
 | [06-lcd](/Labs/06-lcd) | Display devices, LCD display |
 | [07-uart](/Labs/07-uart) | ADC and UART serial communication |
-| [prj](/Labs/Project) | Project: ultrasonic sensor HC-SR04 |
+| [08-13-prj](/Labs/Project) | Project: ultrasonic sensor HC-SR04 |
 
 ## _Homework_
 - [x] [01-hw](/Labs/01-tools)
