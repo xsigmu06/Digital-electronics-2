@@ -113,7 +113,7 @@ ISR(ADC_vect)
     {
         uart_puts("ADC value in decimal: ");
         uart_puts(lcd_string);
-        uart_puts("\n");    // \n ... o radek dale; \r ... na zacatek radku
+        uart_puts("\n");    // \n ... newline
     }
         
     // Print in hexa on LCD 
@@ -126,7 +126,7 @@ ISR(ADC_vect)
     // Print pressed key on LCD
     lcd_gotoxy(8, 1);
     lcd_puts("      ");
-    if(value >= 1016)    //hodnota ADC se muze lisit -> nutny rozsah
+    if(value >= 1016)    // ADC value can differ
     {
         lcd_gotoxy(8, 1);
         lcd_puts("None");
@@ -156,7 +156,7 @@ ISR(ADC_vect)
         lcd_gotoxy(8, 1);
         lcd_puts("Right");
     }
-    
+
     // Print parity bit to LCD ... set to E (even)
     char parity_string[10];
     itoa(value, parity_string, 2);
@@ -173,15 +173,15 @@ ISR(ADC_vect)
     lcd_gotoxy(15, 1);
     lcd_putc(' ');
     
-    if(counter % 2)
+    if((counter % 2) == 0)
     {
         lcd_gotoxy(15, 1);
-        lcd_putc('1');
+        lcd_putc('0');
     }
     else
     {
         lcd_gotoxy(15, 1);
-        lcd_putc('0');
+        lcd_putc('1');
     }
  
     counter = 0;
