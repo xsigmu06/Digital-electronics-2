@@ -27,7 +27,7 @@
 ```c
 //line comment
 /*
-block comment
+  block comment
 */
 
 //•	|	… bitwise OR
