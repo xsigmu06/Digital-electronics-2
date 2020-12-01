@@ -1,0 +1,78 @@
+/***********************************************************************
+ * 
+ * GPIO library for AVR-GCC.
+ * ATmega328P (Arduino Uno), 16 MHz, AVR 8-bit Toolchain 3.6.2
+ *
+ * edited by michal Švento
+ * Copyright (c) 2019-2020 Tomas Fryza
+ * Dept. of Radio Electronics, Brno University of Technology, Czechia
+ * This work is licensed under the terms of the MIT license.
+ *
+ **********************************************************************/
+
+/* Includes ----------------------------------------------------------*/
+#include "gpio.h"
+
+/* Function definitions ----------------------------------------------*/
+void GPIO_config_output(volatile uint8_t *reg_name, uint8_t pin_num)
+{
+	*reg_name = *reg_name | (1<<pin_num);
+}
+
+/*--------------------------------------------------------------------*/
+/* GPIO_config_input_nopull */
+void GPIO_config_input_nopull(volatile uint8_t *reg_name, uint8_t pin_num)
+{
+	*reg_name = *reg_name & ~(1<<pin_num);  // Data Direction Register
+	*reg_name++;                    // Change pointer to Data Register
+	*reg_name = *reg_name & ~(1<<pin_num);   // Data Register
+}
+/*--------------------------------------------------------------------*/
+/* GPIO_config_input_pullup */
+void GPIO_config_input_pullup(volatile uint8_t *reg_name, uint8_t pin_num)
+{
+	*reg_name = *reg_name & ~(1<<pin_num);  // Data Direction Register
+	*reg_name++;                    // Change pointer to Data Register
+	*reg_name = *reg_name | (1<<pin_num);   // Data Register
+}
+
+/*--------------------------------------------------------------------*/
+/* GPIO_write_low */
+void GPIO_write_low(volatile uint8_t *reg_name, uint8_t pin_num)
+{
+	*reg_name = *reg_name & ~(1<<pin_num);
+}
+
+/*--------------------------------------------------------------------*/
+/* GPIO_write_high */
+
+void GPIO_write_high(volatile uint8_t *reg_name, uint8_t pin_num)
+{
+	*reg_name = *reg_name | (1<<pin_num);
+}
+
+/*--------------------------------------------------------------------*/
+/* GPIO_toggle */				// toggle choosen bit
+
+void GPIO_toggle(volatile uint8_t *reg_name, uint8_t pin_num)
+{
+	*reg_name = *reg_name ^ (1<<pin_num);
+}
+
+
+/*--------------------------------------------------------------------*/
+/* GPIO_read */			//read the value of chosen bit and return value due the condition
+
+uint8_t GPIO_read(volatile uint8_t *reg_name, uint8_t pin_num)
+{
+	if(bit_is_set(*reg_name, pin_num))
+	{
+		return 1;
+	}
+	else
+	{
+		return 0;
+	}
+}
+
+
