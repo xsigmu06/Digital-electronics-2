@@ -5,12 +5,15 @@
  * Authors : Jan Sigmund, Michal Švento
  */ 
 /* Definees ----------------------------------------------------------*/
-#define TRIGGER PB2
-#define ECHO	PB3
+#define TRIGGERREAR PB2
+#define ECHOREAR	PB3
+#define TRIGGERBACK PB4
+#define ECHOBACK	PB5
 #define LED1	PC1
 #define LED2	PC2
 #define LED3	PC3
 #define LED4	PC4
+#define SPEAKER	PC5
 
 /* Includes ----------------------------------------------------------*/
 #include <avr/io.h>         // AVR device-specific IO definitions
@@ -26,8 +29,11 @@
 #endif
 
 /* Variables ---------------------------------------------------------*/
-char lcd_string[5]="    ";
-static uint16_t distance;
+char lcd_stringrear[5]="    ";
+char lcd_stringback[5]="    ";
+uint16_t distancerear;
+uint16_t distanceback;
+uint16_t smallerdist;
 
 
 
@@ -36,9 +42,22 @@ static uint16_t distance;
 
 int main(void)
 {	
+	lcd_init(LCD_DISP_ON);
+	lcd_gotoxy(1,0);
+	lcd_puts("Front: ");
+	lcd_gotoxy(1,1);
+	lcd_puts("Back: ");
+	
+	
+	GPIO_config_output(&DDRB,TRIGGERREAR);
+	GPIO_write_low(&PORTB,TRIGGERREAR);
+	GPIO_config_input_nopull(&DDRB,ECHOREAR);
+	GPIO_config_output(&DDRB,TRIGGERREAR);
+	GPIO_write_low(&PORTB,TRIGGERREAR);
+	GPIO_config_input_nopull(&DDRB,ECHOREAR);
+	
 
-	GPIO_config_output(&DDRB,TRIGGER);
-	GPIO_write_low(&PORTB,TRIGGER);
+	
 	GPIO_config_output(&DDRC,LED1);
 	GPIO_write_low(&PORTC,LED1);
 	GPIO_config_output(&DDRC,LED2);
@@ -48,17 +67,22 @@ int main(void)
 	GPIO_config_output(&DDRC,LED4);
 	GPIO_write_low(&PORTC,LED4);
 	
-	GPIO_config_input_nopull(&DDRB,ECHO);
+	GPIO_config_output(&DDRC,SPEAKER);
+	
+	
 	
 	
 	
 	TIM0_overflow_16u();
 	TIM0_overflow_interrupt_enable();
 	
-	TIM1_overflow_1s();
+	TIM1_overflow_262ms();
 	TIM1_overflow_interrupt_enable();
+
+	TIM2_overflow_16ms();
+	TIM2_overflow_interrupt_enable();
 	
-	uart_init(UART_BAUD_SELECT(9600,F_CPU));
+	//uart_init(UART_BAUD_SELECT(115200,F_CPU));
 	
 	//enable global interrupt
 	sei();
@@ -79,13 +103,27 @@ int main(void)
 /*
 *
 */
+uint16_t isbigger (uint16_t distancerear, uint16_t distanceback)
+{
+	if (distancerear<=distanceback)
+	{
+		smallerdist=distancerear;
+	}
+	else
+	{
+		smallerdist=distanceback;
+	}
+	
+	return smallerdist;
+}
+
 
 ISR(TIMER0_OVF_vect)
 {	
 	
 	static uint16_t number_of_overflows=0;
-	static uint16_t comparelenght=0;
-	static uint16_t lenght=0;
+	static uint16_t lenghtrear=0;
+	static uint16_t lenghtback=0;
 	
 	
 	
@@ -104,21 +142,29 @@ ISR(TIMER0_OVF_vect)
 		case STATE_PULSE:
 				if (number_of_overflows<=1)
 				{
-					GPIO_write_high(&PORTB,TRIGGER);
+					GPIO_write_high(&PORTB,TRIGGERREAR);
+					GPIO_write_high(&PORTB,TRIGGERBACK);
 					state=STATE_ECHODETECT;
-					lenght=0;
+					lenghtrear=0;
+					lenghtback=0;
 				} 
 
 				break;	
 				
 		case STATE_ECHODETECT:
-				GPIO_write_low(&PORTB,TRIGGER);
+				GPIO_write_low(&PORTB,TRIGGERREAR);
+				GPIO_write_low(&PORTB,TRIGGERBACK);
 				if (number_of_overflows<=4062)
 				{
-					if (GPIO_read(&PINB,ECHO))
+					if (GPIO_read(&PINB,ECHOREAR))
 					{
-						lenght++;
+						lenghtrear++;
 					}
+					if (GPIO_read(&PINB,ECHOBACK))
+					{
+						lenghtback++;
+					}
+					
 				} 
 				else
 				{
@@ -127,17 +173,33 @@ ISR(TIMER0_OVF_vect)
 				}
 				break;
 		case STATE_ECHOCOUNT:
-				if (lenght!=comparelenght)
+		
+				if (lenghtrear<8)
 				{
-					distance=lenght*16*0.017;
-					itoa(distance,lcd_string,10);
-					GPIO_toggle(&PORTB,LED3);
 					
-					comparelenght=lenght;
+				}
+				else
+				{
+					distancerear=lenghtrear*16*0.017;
+					itoa(distancerear,lcd_stringrear,10);
+
 				}
 				
+				if (lenghtback<8)  // smaller than 2cm
+				{
 				
-				lenght=0;
+				}
+				else
+				{
+					distanceback=lenghtback*16*0.017;
+					itoa(distanceback,lcd_stringback,10);
+				}
+				
+
+				smallerdist=isbigger(lenghtrear,lenghtback);
+			
+				lenghtrear=0;
+				lenghtback=0;
 				number_of_overflows=0;
 				state=STATE_PULSE;
 
@@ -151,39 +213,48 @@ ISR(TIMER0_OVF_vect)
 	
 }
 
-
-
 ISR(TIMER1_OVF_vect)
 {
-
+		//uart_puts(lcd_stringback);
+		//uart_puts("\n");
+		//uart_puts(lcd_stringrear);
+		//uart_puts(" ");
 	
-	uart_puts(lcd_string);
-	uart_puts("\n");
-	
-	
+			lcd_gotoxy(8,0);
+			lcd_puts("    ");
+			lcd_gotoxy(8,0);
+			lcd_puts(lcd_stringrear);
+			lcd_gotoxy(8,1);
+			lcd_puts("    ");
+			lcd_gotoxy(8,1);
+			lcd_puts(lcd_stringback);
+		
+		
+		
+			
 	// Turn on LEDS
-	if(distance <= 10)
+	if(smallerdist <= 10)
 	{
 		GPIO_write_high(&PORTC, LED1);
 		GPIO_write_high(&PORTC, LED2);
 		GPIO_write_high(&PORTC, LED3);
 		GPIO_write_high(&PORTC, LED4);
 	}
-	else if(distance <= 50)
+	else if(smallerdist<= 50)
 	{
 		GPIO_write_high(&PORTC, LED1);
 		GPIO_write_high(&PORTC, LED2);
 		GPIO_write_high(&PORTC, LED3);
 		GPIO_write_low(&PORTC, LED4);
 	}
-	else if(distance <= 100)
+	else if(smallerdist <= 100)
 	{
 		GPIO_write_high(&PORTC, LED1);
 		GPIO_write_high(&PORTC, LED2);
 		GPIO_write_low(&PORTC, LED3);
 		GPIO_write_low(&PORTC, LED4);
 	}
-	else if(distance <= 200)
+	else if(smallerdist <= 200)
 	{
 		GPIO_write_high(&PORTC, LED1);
 		GPIO_write_low(&PORTC, LED2);
@@ -197,5 +268,35 @@ ISR(TIMER1_OVF_vect)
 		GPIO_write_low(&PORTC, LED3);
 		GPIO_write_low(&PORTC, LED4);
 	}
+			
+		
+		
+		
+		
+	/*if (smallerdist<10)
+	{
+		TIM1_overflow_33ms();
+		GPIO_toggle(&PORTC,SPEAKER);
+	}
 	
+	else if(smallerdist<50)
+	{
+		
+	}
+	else if(smallerdist<100)
+	{
+		
+	}
+	*/
 }
+
+
+
+ISR(TIMER2_OVF_vect)
+{
+	
+
+
+}
+
+
