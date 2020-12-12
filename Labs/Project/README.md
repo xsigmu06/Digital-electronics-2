@@ -33,8 +33,8 @@ _distance = time * velocity = time * 0.017 [cm]_
 
 
 
-![object](Images/hc-sr04_signals-object detected.jpg)
-![no_object](Images/hc-sr04_signals-no object.jpg)
+![object](Images/object.jpg)
+![no_object](Images/no_object.jpg)
 
 
 ## Code description and simulations
