@@ -249,14 +249,75 @@ ISR(TIMER1_OVF_vect)
 ISR(TIMER2_OVF_vect)
 {
     GPIO_toggle(&PORTC, speaker);
-    /*static uint8_t counter = 0;
+    static uint8_t counter = 0;
+	static uint16_t counterpulse= 0;
     counter++;
-    
-    if(counter >= 10)
-    {
-        GPIO_toggle(&PORTC, speaker);
-        counter = 0;
-    }*/
+	counterpulse++;
+	
+	if (counterpulse<=500)
+	{
+		if(counter >= 30)
+		{
+			if (smallerDist<=20)
+			{
+				TIM2_overflow_1ms();
+				GPIO_toggle(&PORTC, speaker);
+				counter = 0;
+			}
+			else if (smallerDist<=50)
+			{
+				TIM2_overflow_4ms();
+				GPIO_toggle(&PORTC, speaker);
+				counter = 0;
+			}
+			else if (smallerDist<=150)
+			{
+				TIM2_overflow_16ms();
+				GPIO_toggle(&PORTC, speaker);
+				counter = 0;
+			}
+			else
+			{
+				TIM2_overflow_1ms();
+				GPIO_write_low(&PORTC,speaker);
+				counter=0;	
+			}
+		}
+	}
+	else if (counterpulse<= 1000)
+	{
+			if(counter >= 30)
+			{
+				if (smallerDist<=20)
+				{
+					TIM2_overflow_1ms();
+					GPIO_write_low(&PORTC, speaker);
+					counter = 0;
+				}
+				else if (smallerDist<=50)
+				{
+					TIM2_overflow_4ms();
+					GPIO_write_low(&PORTC, speaker);
+					counter = 0;
+				}
+				else if (smallerDist<=150)
+				{
+					TIM2_overflow_16ms();
+					GPIO_write_low(&PORTC, speaker);
+					counter = 0;
+				}
+				else
+				{
+					TIM2_overflow_1ms();
+					GPIO_write_low(&PORTC,speaker);
+					counter=0;
+				}
+			}
+	}
+	else
+	{
+		counterpulse=0;
+	}
 }
 
 // clears LCD
