@@ -2,9 +2,10 @@
 
 ### Team members
 
-Names of all project team members.
+Jan Sigmund
+Michal Švento
 
-[Link to your GitHub project folder](http://github.com/xxx)
+[Link to your GitHub project folder](https://github.com/xsigmu06/Digital-electronics-2/tree/master/Labs/Project)
 
 ### Project objectives
 
