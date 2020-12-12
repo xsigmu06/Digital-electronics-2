@@ -16,7 +16,7 @@ Description of ultrasonic sensor HC-SR04 control. Parking assistant application 
 
 ![module](Images/hc-sr04.png)
 
-Ultrasonic sensor HC-SR04 enables measuring distance in range of 2 _cm_ to 4 _m_. It uses sonar to send high frequency impulses at 40 kHz, therefore it is not affected by sunlight or black material. Measurement accuracy can be up to 3 _mm_. Object detection is in 30 degree angle.
+Ultrasonic sensor HC-SR04 enables measuring distance in range of 2 _cm_ to 4 _m_. It uses sonar to send high frequency impulses at 40 kHz, therefore it is not affected by sunlight or black material. Sound waves can also penetrate through water. Measurement accuracy can be up to 3 _mm_. Object detection is in 30 degree angle.
 
 
 ### Pins
@@ -31,7 +31,7 @@ _distance = time * velocity = time * 0.017 [cm]_
 
 ### Timing
 
-
+The pulse width of _Echo_ high can be between 120 _μs_ (2 _cm_) and 23.5 _ms_ (400 _cm_). If no object is detected, or the distance is greater than 4 _m_, the _Echo_ signal will be max. 38 _ms_ long.
 
 ![object](Images/object.jpg)
 ![no_object](Images/no_object.jpg)
@@ -51,6 +51,7 @@ _distance = time * velocity = time * 0.017 [cm]_
 
 HC-SR04 User's_Manual
 https://docs.google.com/document/d/1Y-yZnNhMYy7rwhAgyL_pfa39RsB-x2qR4vP8saG73rE/edit#
+
 HC-SR04 Ultrasonic Sensor datasheet
 https://components101.com/ultrasonic-sensor-working-pinout-datasheet
 
