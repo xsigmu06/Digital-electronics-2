@@ -22,16 +22,19 @@ Ultrasonic sensor HC-SR04 enables measuring distance in range of 2 _cm_ to 4 _m_
 ### Pins
 
 Input pin _Trigger_ must receive 10 _us_ long high pulse (5_V_) to generate ultrasonic burst, which is then reflected off an obstacle back to receiver. When the sound wave gets back, a high value (5_V_) will be set on output pin _Echo_. The width of this signal (in _μs_) is proportional to measured distance divided by 2 (the wave travels to object and back), which can be calculated as follows: 
+
 _distance = time / 58 [cm]_
+
 Speed of sound can also be used - for output in _cm_ convert velocity (e.g. 340 _m/s_) to _cm/μs_ and divide by 2:
+
 _distance = time * velocity = time * 0.017 [cm]_
 
 ### Timing
 
 
 
-![object](hc-sr04_signals-object detected.jpg)
-![no_object](hc-sr04_signals-no object.jpg)
+![object](Images/hc-sr04_signals-object detected.jpg)
+![no_object](Images/hc-sr04_signals-no object.jpg)
 
 
 ## Code description and simulations
