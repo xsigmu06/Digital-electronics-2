@@ -42,6 +42,13 @@
 #define TIM0_overflow_1ms()		TCCR0B &= ~(1<<CS02); TCCR0B |= (1<<CS01) | (1<<CS00);		//0 1 1
 #define TIM0_overflow_4ms()     TCCR0B &= ~((1<<CS01) | (1<<CS00)); TCCR0B |= (1<<CS02);	//1 0 0
 #define TIM0_overflow_16ms()    TCCR0B &= ~(1<<CS01); TCCR0B |= (1<<CS02) | (1<<CS00);		//1 0 1
+
+/**
+ * overflow CTC mode
+ */
+#define TIM0_CTC();					TCCR0A |= (1<<WGM01);TCCR0A &= ~(1<<WGM00);TCCR0B &= ~(1<<WGM02);
+#define TIM0_overflow_COMPA()		TIMSK0 |= (1<<OCIE0A);
+
 /**																							
  * @brief Defines prescaler CPU frequency values for Timer/Counter1.						
  * @note  F_CPU = 16 MHz																	

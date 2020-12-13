@@ -5,13 +5,18 @@
  * Author : sigmu
  */ 
 
+/* Define CPU frequency 16 MHz ---------------------------------------*/
+#ifndef  F_CPU
+#define F_CPU 16000000
+#endif
+
 /* Includes ----------------------------------------------------------*/
 #include <stdlib.h>         // C library. Needed for conversion function
 #include <stdbool.h>        // C library for boolean values
-#include <string.h>
+#include <string.h>         // C library for working with strings (strcpy)
 #include <avr/io.h>         // AVR device-specific IO definitions
 #include <avr/interrupt.h>  // Interrupts standard C library for AVR-GCC
-
+#include <util/delay.h>     // Functions for busy-wait delay loops
 #include "gpio.h"			// General purpose input output library
 #include "timer.h"          // Timer library for AVR-GCC
 #include "lcd.h"            // Peter Fleury's LCD library
@@ -19,12 +24,6 @@
 
 
 /* Defines -----------------------------------------------------------*/
-#ifndef  F_CPU
-#define F_CPU 16000000
-#endif
-
-#include <util/delay.h>     // Functions for busy-wait delay loops
-
 #define trigFront   PB2
 #define echoFront   PB3
 #define trigBack    PB4
@@ -38,22 +37,21 @@
 #define speaker	PC5
 
 /* Variables ---------------------------------------------------------*/
-char lcd_string[15] = "Front = 400 cm";
+char lcd_string[5];     //"Front = 400 cm";
 
-float distFront = 0;  // max dist: 400 cm
-float distBack = 0;
-uint16_t smallerDist = 0;
-uint16_t diffFront = 0, diffBack = 0;
+volatile float distFront = 0.0;  // max dist: 400 cm
+volatile float distBack = 0.0;
+
+uint8_t TIM2_off = 0;   
 
 // FSM declaration
 typedef enum {              
     STATE_TRIG,
     STATE_ECHO_MEAS,
-    //STATE_ECHO_COUNT,
 } state_t;
 
-void displayResult(uint16_t DistanceFront,  uint16_t DistanceBack);
-void lcd_clear(uint16_t pos);
+void displayResult(volatile float DistanceFront, volatile float DistanceBack);
+void lcd_clear(uint8_t pos);
 
 /* Function definitions ----------------------------------------------*/
 int main(void)
@@ -85,24 +83,32 @@ int main(void)
     // Initialize LCD display
     lcd_init(LCD_DISP_ON);
     lcd_gotoxy(0, 0);
-    lcd_puts("Front: ");
+    lcd_puts("Front: Standby..");
     lcd_gotoxy(0, 1);
-    lcd_puts(" Back: ");
+    lcd_puts(" Back: Standby..");
+    
+    // Initialize UART to asynchronous, 8N1, 9600
+    uart_init(UART_BAUD_SELECT(9600, F_CPU));
+    uart_puts("Welcome.\n\n");
+    //uart_puts("Please, fasten your seatbelt.\n\n");
 
     // Configure 8-bit Timer/Counter0
     // Enable interrupt and set the overflow prescaler to 16 us
-    // Used for displaying result on LCD, uart, LEDs
-    TIM0_overflow_16us();
-    TIM0_overflow_interrupt_enable();
+    // Used for measuring and calculating distance
+    //TIM0_overflow_16us();
+    //TIM0_overflow_interrupt_enable();
+    
+    // Timer0 1us overflow interrupt
+    // F_CPU/freq*2*N -1
+    OCR0A = 127;    
+    TIM0_CTC();
+    TIM0_overflow_COMPA();
 
     // Configure 16-bit Timer/Counter1
     // Enable interrupt and set the overflow prescaler to 262 ms
     // Used for displaying result on LCD, uart, LEDs
     TIM1_overflow_262ms();
-    TIM1_overflow_interrupt_enable();    
-
-    // Initialize UART to asynchronous, 8N1, 9600
-    uart_init(UART_BAUD_SELECT(9600, F_CPU));
+    TIM1_overflow_interrupt_enable();      
 
     // Enables interrupts by setting the global interrupt mask
     sei();
@@ -123,9 +129,10 @@ int main(void)
  * ISR starts when Timer/Counter0 overflows. 
  * 
  */
-ISR(TIMER0_OVF_vect)
+//ISR(TIMER0_OVF_vect)
+ISR(TIMER0_COMPA_vect)
 {
-    static uint16_t number_of_overflows=0;
+    static uint16_t number_of_overflows = 0;
     static uint16_t lenFront = 0;
     static uint16_t lenBack = 0;
     static state_t state= STATE_TRIG;
@@ -146,7 +153,7 @@ ISR(TIMER0_OVF_vect)
             break;
         
         case STATE_ECHO_MEAS:
-            if (number_of_overflows<=3750)  // 60 ms
+            if (number_of_overflows <= 65000)  // 60 ms
             {
                 if (GPIO_read(&PINB, echoFront))
                 {
@@ -160,8 +167,8 @@ ISR(TIMER0_OVF_vect)
             else
             {
                 number_of_overflows = 0;
-                distFront = lenFront * 0.017 * 16; // 16 us
-                distBack = lenBack * 0.017 * 16;
+                distFront = (float)lenFront * 0.017 * 16.0; // 16 us
+                distBack = (float)lenBack * 0.017 * 16.0;
                 lenFront = 0;
                 lenBack = 0;
                 state = STATE_TRIG;
@@ -180,7 +187,9 @@ ISR(TIMER0_OVF_vect)
  */
 ISR(TIMER1_OVF_vect)
 {
-    GPIO_toggle(&PORTC, speaker);
+    TIM2_overflow_4ms();
+    static uint16_t smallerDist = 0;
+    
     // Display on LCD, uart
     displayResult(distFront, distBack);
     
@@ -193,25 +202,29 @@ ISR(TIMER1_OVF_vect)
         smallerDist = distBack;
     }
             
-    // Display on LEDs, change frequency of speaker tone with TIM2 prescaler        
-    if(smallerDist <= 50)
+    // Display on LEDs, 
+    // change frequency of speaker tone with TIM2 prescaler
+    // change frequency of disabling TIM2        
+    if(smallerDist <= 15)
     {
         GPIO_write_high(&PORTC, LED1);
         GPIO_write_high(&PORTC, LED2);
         GPIO_write_high(&PORTC, LED3);
         GPIO_write_high(&PORTC, LED4);
         
-        TIM2_overflow_1ms();    
+        TIM2_off = 200;
+        TIM2_overflow_2ms();    
         TIM2_overflow_interrupt_enable();    
     }
-    else if(smallerDist <= 75)
+    else if(smallerDist <= 50)
     {
         GPIO_write_high(&PORTC, LED1);
         GPIO_write_high(&PORTC, LED2);
         GPIO_write_high(&PORTC, LED3);
         GPIO_write_low(&PORTC, LED4);
         
-        TIM2_overflow_2ms();
+        TIM2_off = 50;
+        TIM2_overflow_4ms();
         TIM2_overflow_interrupt_enable();   
     }
     else if(smallerDist <= 100)
@@ -221,6 +234,7 @@ ISR(TIMER1_OVF_vect)
         GPIO_write_low(&PORTC, LED3);
         GPIO_write_low(&PORTC, LED4);
         
+        TIM2_off = 10;
         TIM2_overflow_4ms();
         TIM2_overflow_interrupt_enable();   
     }
@@ -231,9 +245,8 @@ ISR(TIMER1_OVF_vect)
         GPIO_write_low(&PORTC, LED3);
         GPIO_write_low(&PORTC, LED4);
         
-        /*TIM2_overflow_16ms(); // too low freq.
-        TIM2_overflow_interrupt_enable(); */ 
-        TIM2_overflow_interrupt_disable(); 
+        TIM2_off = 5;
+        TIM2_overflow_interrupt_enable();  
     }
     else
     {
@@ -248,92 +261,33 @@ ISR(TIMER1_OVF_vect)
 
 ISR(TIMER2_OVF_vect)
 {
-    GPIO_toggle(&PORTC, speaker);
+    //GPIO_toggle(&PORTC, speaker);
     static uint8_t counter = 0;
-	static uint16_t counterpulse= 0;
     counter++;
-	counterpulse++;
-	
-	if (counterpulse<=500)
-	{
-		if(counter >= 30)
-		{
-			if (smallerDist<=20)
-			{
-				TIM2_overflow_1ms();
-				GPIO_toggle(&PORTC, speaker);
-				counter = 0;
-			}
-			else if (smallerDist<=50)
-			{
-				TIM2_overflow_4ms();
-				GPIO_toggle(&PORTC, speaker);
-				counter = 0;
-			}
-			else if (smallerDist<=150)
-			{
-				TIM2_overflow_16ms();
-				GPIO_toggle(&PORTC, speaker);
-				counter = 0;
-			}
-			else
-			{
-				TIM2_overflow_1ms();
-				GPIO_write_low(&PORTC,speaker);
-				counter=0;	
-			}
-		}
-	}
-	else if (counterpulse<= 1000)
-	{
-			if(counter >= 30)
-			{
-				if (smallerDist<=20)
-				{
-					TIM2_overflow_1ms();
-					GPIO_write_low(&PORTC, speaker);
-					counter = 0;
-				}
-				else if (smallerDist<=50)
-				{
-					TIM2_overflow_4ms();
-					GPIO_write_low(&PORTC, speaker);
-					counter = 0;
-				}
-				else if (smallerDist<=150)
-				{
-					TIM2_overflow_16ms();
-					GPIO_write_low(&PORTC, speaker);
-					counter = 0;
-				}
-				else
-				{
-					TIM2_overflow_1ms();
-					GPIO_write_low(&PORTC,speaker);
-					counter=0;
-				}
-			}
-	}
-	else
-	{
-		counterpulse=0;
-	}
+
+    GPIO_toggle(&PORTC, speaker);
+
+    if(counter >= TIM2_off)
+    {
+        TIM2_overflow_interrupt_disable();
+        counter = 0;
+    }
 }
 
 // clears LCD
-void lcd_clear(uint16_t pos)
+void lcd_clear(uint8_t pos)
 {
     lcd_gotoxy(7, pos);
     lcd_puts("                ");   // clear all 16 symbols in a row
 }
 
 // displays result on LCD, uart
-void displayResult(uint16_t DistanceFront,  uint16_t DistanceBack)
+void displayResult(volatile float DistanceFront, volatile float DistanceBack)
 {    
-    uint16_t dist = 0;
-    uint16_t pos = 0;
-    char side[5]= "";
-    bool changed = false;
+    static float dist = 0.0, diffFront = 0.0, diffBack = 0.0;
+    uint8_t pos = 0;
+    char side[5]= "Front"; 
+    bool changed = false;  
     
     // if one distance changed
      if (diffFront != DistanceFront)
@@ -357,13 +311,15 @@ void displayResult(uint16_t DistanceFront,  uint16_t DistanceBack)
     {
         changed = false;
         itoa(dist, lcd_string, 10);
+        //sprintf(lcd_string, "%0.2f", dist);
+        
     
 	    // Write result on LCD screen
 	    if(dist < 2)  // Distance smaller than minimum possible
 	    {
 		    lcd_clear(pos);
 		    lcd_gotoxy(7, pos);                                   
-		    lcd_puts(" < 2 cm");
+		    lcd_puts("<2 cm");
 			
             uart_puts(side);		    
 		    uart_puts(" object too close.");
@@ -372,24 +328,24 @@ void displayResult(uint16_t DistanceFront,  uint16_t DistanceBack)
 	    else if(dist <= 400)
 	    {
 		    lcd_clear(pos);
-		    lcd_gotoxy(7, pos);		    
+		    lcd_gotoxy(8, pos);		    
 		    lcd_puts(lcd_string);
-            lcd_puts(" cm");                       
+            lcd_puts("  cm");                       
 			
             uart_puts(side);		    
 		    uart_puts(" distance: ");
 		    uart_puts(lcd_string);
-            uart_puts(" cm");
+            uart_puts("  cm");
 		    uart_puts("\n");    
 	    }
 	    else if(dist > 400)   // Distance greater than maximum possible
 	    {
 		    lcd_clear(pos);
-		    lcd_gotoxy(0, pos);
-		    lcd_puts(" > 400 cm");
+		    lcd_gotoxy(7, pos);
+		    lcd_puts(">400 cm");
 					    
             uart_puts(side);
-		    uart_puts(" distance is greater than 400 cm.");
+		    uart_puts(" object too far.");     
 		    uart_puts("\n"); 
 	    }
 	    else
