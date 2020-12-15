@@ -53,7 +53,21 @@ Second interrupt is used for displaying the measured Front and Back on LCD and U
 |100 - 125 | 1 | 
 | >125 | 0 |
 
-In TIM1 overflow interrupt we change also the lenght of pulse for speaker (i.e frequency of sound for speaker speaker) on same distance limits as on LCD. Overflow is disabled when counter reaches the TIM2_STOP value. The overflow on TIM2 is enabled again, when TIM1 overflows. Frequency of speaker depends on closer object. 
+In TIM1 overflow interrupt we change also the lenght of pulse for speaker (i.e frequency of sound for speaker speaker) on same distance limits as on LCD. Variable  TIM2_STOP is the value which is changed.  Overflow is disabled when counter reaches the TIM2_STOP value. The overflow on TIM2 is enabled again, when TIM1 overflows. Frequency of speaker depends on closer object. 
+### Functions
+#### displayResult
+
+This function provides all outputs on LCD and UART. Data are send only when the value of distance is changed. 
+We have three states, which can be displayed:
+
+**1.** Distance is smaller than 2 cm - "*<2 cm*" is displayed
+**2.** Distance between 2 - 400 cm - Absolute value is displayed
+**3.** Distance > 400 cm - "*>400 cm*" is displayed
+
+#### lcd_clear 
+
+The function clears the part of display, where the value of distance is shown.
+
 ## Video/Animation
 
 *Write your text here*
