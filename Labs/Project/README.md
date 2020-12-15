@@ -33,7 +33,7 @@ The pulse width of _Echo_ high can be between 120 _μs_ (2 _cm_) and 23.5 _ms_ (
 
 ## Code description and simulations
 
-Most of the functionality is implemented directly in `main.c` accessible [here](main.c). Libraries used are native for C, avr libraries and also from creator [Peter Fleury](http://tinyurl.com/peterfleury).
+Most of the functionality is implemented directly in `main.c` accessible [here](main.c). Libraries used are C native, avr libraries and also from creator [Peter Fleury](http://tinyurl.com/peterfleury).
 
 ### Interrupts
 
