@@ -34,7 +34,7 @@
 #define trigFront   PB2
 #define echoFront   PB3
 #define trigBack    PB4
-#define echoBack	PB5
+#define echoBack    PB5
 
 // Pins for front LED bars
 #define fLED1	PC1
@@ -78,34 +78,34 @@ void lcd_clear(uint8_t pos);
 int main(void)
 {
     // Output pins (Trigger)
-	GPIO_config_output(&DDRB, trigFront);
-	GPIO_write_low(&PORTB, trigFront);
-	GPIO_config_output(&DDRB, trigBack);
-	GPIO_write_low(&PORTB, trigBack);
+    GPIO_config_output(&DDRB, trigFront);
+    GPIO_write_low(&PORTB, trigFront);
+    GPIO_config_output(&DDRB, trigBack);
+    GPIO_write_low(&PORTB, trigBack);
 	
-	// Input pins (Echo)
-	GPIO_config_input_nopull(&DDRB, echoFront);
-	GPIO_config_input_nopull(&DDRB, echoBack);
+    // Input pins (Echo)
+    GPIO_config_input_nopull(&DDRB, echoFront);
+    GPIO_config_input_nopull(&DDRB, echoBack);
 	
-	// Front LEDs
-	GPIO_config_output(&DDRC, fLED1);	
-	GPIO_config_output(&DDRC, fLED2);
+    // Front LEDs
+    GPIO_config_output(&DDRC, fLED1);	
+    GPIO_config_output(&DDRC, fLED2);
     GPIO_config_output(&DDRC, fLED3);
     GPIO_config_output(&DDRC, fLED4);
     GPIO_write_low(&PORTC, fLED1);
-	GPIO_write_low(&PORTC, fLED2    );
+    GPIO_write_low(&PORTC, fLED2);
     GPIO_write_low(&PORTC, fLED3);
     GPIO_write_low(&PORTC, fLED4);
 
-	// Back LEDs
-	GPIO_config_output(&DDRD, bLED5);	
-	GPIO_config_output(&DDRD, bLED6);
+    // Back LEDs
+    GPIO_config_output(&DDRD, bLED5);	
+    GPIO_config_output(&DDRD, bLED6);
     GPIO_config_output(&DDRD, bLED7);
     GPIO_config_output(&DDRD, bLED8);
     GPIO_write_low(&PORTD, bLED8); 
     GPIO_write_low(&PORTD, bLED7);
     GPIO_write_low(&PORTD, bLED5);
-	GPIO_write_low(&PORTD, bLED6);	
+    GPIO_write_low(&PORTD, bLED6);	
 
     // Speaker
     GPIO_config_output(&DDRC, speaker);
@@ -239,74 +239,74 @@ ISR(TIMER1_OVF_vect)
     }
 	
     // Generate tone based on distance	
-	if(smallerDist <= 15)
-	{	
+    if(smallerDist <= 15)
+    {	
         // Change frequency of disabling TIM2 interrupt
-		TIM2_off = 250;
+        TIM2_off = 250;
         // Increase frequency of speaker tone
-		TIM2_overflow_2ms();
-		TIM2_overflow_interrupt_enable();
-	}
-	else if(smallerDist <= 50)
-	{		
-		TIM2_off = 50;
-		TIM2_overflow_interrupt_enable();
-	}
-	else if(smallerDist <= 100)
-	{
-		TIM2_off = 10;
-		TIM2_overflow_interrupt_enable();
-	}
-	else if(smallerDist <= 125)
-	{		
-		TIM2_off = 5;
-		TIM2_overflow_interrupt_enable();
-	}
-	else
-	{		
-		TIM2_overflow_interrupt_disable();
-	}
+        TIM2_overflow_2ms();
+        TIM2_overflow_interrupt_enable();
+    }
+    else if(smallerDist <= 50)
+    {		
+        TIM2_off = 50;
+        TIM2_overflow_interrupt_enable();
+    }
+    else if(smallerDist <= 100)
+    {
+        TIM2_off = 10;
+        TIM2_overflow_interrupt_enable();
+    }
+    else if(smallerDist <= 125)
+    {		
+        TIM2_off = 5;
+        TIM2_overflow_interrupt_enable();
+    }
+    else
+    {		
+        TIM2_overflow_interrupt_disable();
+    }
 	
-	// Turn front LEDs on/off based on distance
-	if(distFront <= 15)
-	{
-		GPIO_write_high(&PORTC, fLED1);
-		GPIO_write_high(&PORTC, fLED2);
-		GPIO_write_high(&PORTC, fLED3);
-		GPIO_write_high(&PORTC, fLED4);
-	}
-	else if(distFront <= 50)
-	{
-		GPIO_write_high(&PORTC, fLED1);
-		GPIO_write_high(&PORTC, fLED2);
-		GPIO_write_high(&PORTC, fLED3);
-		GPIO_write_low(&PORTC, fLED4);
+    // Turn front LEDs on/off based on distance
+    if(distFront <= 15)
+    {
+        GPIO_write_high(&PORTC, fLED1);
+        GPIO_write_high(&PORTC, fLED2);
+        GPIO_write_high(&PORTC, fLED3);
+        GPIO_write_high(&PORTC, fLED4);
+    }
+    else if(distFront <= 50)
+    {
+        GPIO_write_high(&PORTC, fLED1);
+        GPIO_write_high(&PORTC, fLED2);
+        GPIO_write_high(&PORTC, fLED3);
+        GPIO_write_low(&PORTC, fLED4);
 
-	}
-	else if(distFront <= 100)
-	{
-		GPIO_write_high(&PORTC, fLED1);
-		GPIO_write_high(&PORTC, fLED2);
-		GPIO_write_low(&PORTC, fLED3);
-		GPIO_write_low(&PORTC, fLED4);
-	}
-	else if(distFront <= 125)
-	{
-		GPIO_write_high(&PORTC, fLED1);
-		GPIO_write_low(&PORTC, fLED2);
-		GPIO_write_low(&PORTC, fLED3);
-		GPIO_write_low(&PORTC, fLED4);
-	}
-	else
-	{
-		GPIO_write_low(&PORTC, fLED1);
-		GPIO_write_low(&PORTC, fLED2);
-		GPIO_write_low(&PORTC, fLED3);
-		GPIO_write_low(&PORTC, fLED4);
-	}
+    }
+    else if(distFront <= 100)
+    {
+        GPIO_write_high(&PORTC, fLED1);
+        GPIO_write_high(&PORTC, fLED2);
+        GPIO_write_low(&PORTC, fLED3);
+        GPIO_write_low(&PORTC, fLED4);
+    }
+    else if(distFront <= 125)
+    {
+        GPIO_write_high(&PORTC, fLED1);
+        GPIO_write_low(&PORTC, fLED2);
+        GPIO_write_low(&PORTC, fLED3);
+        GPIO_write_low(&PORTC, fLED4);
+    }
+    else
+    {
+        GPIO_write_low(&PORTC, fLED1);
+        GPIO_write_low(&PORTC, fLED2);
+        GPIO_write_low(&PORTC, fLED3);
+        GPIO_write_low(&PORTC, fLED4);
+    }
 	
     // Turn back LEDs on/off based on distance	       
-	if(distBack <= 15)
+    if(distBack <= 15)
     {
         GPIO_write_high(&PORTD, bLED5);
         GPIO_write_high(&PORTD, bLED6);
@@ -408,35 +408,35 @@ void displayResult(volatile float DistanceFront, volatile float DistanceBack)
 	    // Write result on LCD screen
 	    if(dist < 2)  // Distance smaller than minimum possible
 	    {
-		    lcd_clear(pos);
-		    lcd_gotoxy(7, pos);                                   
-		    lcd_puts("<2");
+            lcd_clear(pos);
+            lcd_gotoxy(7, pos);                                   
+            lcd_puts("<2");
 			
             uart_puts(side);		    
-		    uart_puts(" object too close.");
-		    uart_puts("\n");   
+            uart_puts(" object too close.");
+            uart_puts("\n");   
 	    }       
 	    else if(dist <= 400)
 	    {
-		    lcd_clear(pos);
-		    lcd_gotoxy(8, pos);		    
-		    lcd_puts(lcd_string);  
+            lcd_clear(pos);
+            lcd_gotoxy(8, pos);		    
+            lcd_puts(lcd_string);  
 			
             uart_puts(side);		    
-		    uart_puts(" distance: ");
-		    uart_puts(lcd_string);
+            uart_puts(" distance: ");
+            uart_puts(lcd_string);
             uart_puts("  cm");
-		    uart_puts("\n");    
+            uart_puts("\n");    
 	    }
 	    else if(dist > 400)   // Distance greater than maximum possible
 	    {
-		    lcd_clear(pos);
-		    lcd_gotoxy(7, pos);
-		    lcd_puts(">400");
+            lcd_clear(pos);
+            lcd_gotoxy(7, pos);
+            lcd_puts(">400");
 					    
             uart_puts(side);
-		    uart_puts(" object too far.");     
-		    uart_puts("\n"); 
+            uart_puts(" object too far.");     
+            uart_puts("\n"); 
 	    }      
     }             
 }
