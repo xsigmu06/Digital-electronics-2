@@ -80,7 +80,7 @@ The function clears the part of display, where the value of distance is shown.
 ## Video/Animation
 
 *Write your text here*
-
+![test](Images/finaltest.gif)
 
 ## References
 
