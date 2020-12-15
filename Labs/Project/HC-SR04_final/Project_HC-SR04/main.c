@@ -10,7 +10,7 @@
  */ 
 
 /* Define CPU frequency 16 MHz ---------------------------------------*/
-#ifndef  F_CPU
+#ifndef F_CPU
 #define F_CPU 16000000
 #endif
 
@@ -114,9 +114,9 @@ int main(void)
     // Initialize LCD display
     lcd_init(LCD_DISP_ON);
     lcd_gotoxy(0, 0);
-    lcd_puts("Front: Standby..");
+    lcd_puts("Front:       cm");
     lcd_gotoxy(0, 1);
-    lcd_puts(" Back: Standby..");
+    lcd_puts(" Back:       cm");
     
     // Initialize UART to asynchronous, 8N1, 9600
     uart_init(UART_BAUD_SELECT(9600, F_CPU));
@@ -367,7 +367,7 @@ ISR(TIMER2_OVF_vect)
 void lcd_clear(uint8_t pos)
 {
     lcd_gotoxy(7, pos);
-    lcd_puts("        ");   // clear symbols
+    lcd_puts("     ");   // clear distance symbols
 }
 
 // Function definition to displays result on LCD and uart
@@ -410,7 +410,7 @@ void displayResult(volatile float DistanceFront, volatile float DistanceBack)
 	    {
 		    lcd_clear(pos);
 		    lcd_gotoxy(7, pos);                                   
-		    lcd_puts("<2 cm");
+		    lcd_puts("<2");
 			
             uart_puts(side);		    
 		    uart_puts(" object too close.");
@@ -420,8 +420,7 @@ void displayResult(volatile float DistanceFront, volatile float DistanceBack)
 	    {
 		    lcd_clear(pos);
 		    lcd_gotoxy(8, pos);		    
-		    lcd_puts(lcd_string);
-            lcd_puts("  cm");                       
+		    lcd_puts(lcd_string);  
 			
             uart_puts(side);		    
 		    uart_puts(" distance: ");
@@ -433,7 +432,7 @@ void displayResult(volatile float DistanceFront, volatile float DistanceBack)
 	    {
 		    lcd_clear(pos);
 		    lcd_gotoxy(7, pos);
-		    lcd_puts(">400 cm");
+		    lcd_puts(">400");
 					    
             uart_puts(side);
 		    uart_puts(" object too far.");     
