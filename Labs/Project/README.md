@@ -43,7 +43,7 @@ Since the lowest possible value (without further alterations) for interrupt via 
 In it's ISR (Interrupt Service Routine) `TIMER0_OVF_vect`, state FSM (Finite State Machine) is used with two states: `TRIG` & `STATE_ECHO_MEAS`.
 
 - `TRIG` state sends 10us Trigger pulse 
-- `STATE_ECHO_MEAS` state measures width of Echo signal and calculateds distance in _cm_.
+- `STATE_ECHO_MEAS` state measures width of Echo signal and calculated distance in _cm_.
 
 #### Timer1 
 `TIMER1_OVF_vect` ISR (prescaler for 262 _ms_) is used for displaying the measured distance for Front and Back modules on LCD and UART, and turning on/off LED bars based on distance (as seen on table) for both sensors individually. LED bars consists of 4 individual LEDs. For example, when distance is smaller than 15 _cm_ - all are turned on. On the other hand, if distance is bigger than 125 _cm_, LEDs are turned off completely.
