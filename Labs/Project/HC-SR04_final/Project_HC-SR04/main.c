@@ -405,9 +405,9 @@ void displayResult(volatile float DistanceFront, volatile float DistanceBack)
         changed = false;
         itoa(dist, lcd_string, 10);
             
-	    // Write result on LCD screen
-	    if(dist < 2)  // Distance smaller than minimum possible
-	    {
+        // Write result on LCD screen
+        if(dist < 2)  // Distance smaller than minimum possible
+        {
             lcd_clear(pos);
             lcd_gotoxy(7, pos);                                   
             lcd_puts("<2");
@@ -415,9 +415,9 @@ void displayResult(volatile float DistanceFront, volatile float DistanceBack)
             uart_puts(side);		    
             uart_puts(" object too close.");
             uart_puts("\n");   
-	    }       
-	    else if(dist <= 400)
-	    {
+        }       
+        else if(dist <= 400)
+        {
             lcd_clear(pos);
             lcd_gotoxy(8, pos);		    
             lcd_puts(lcd_string);  
@@ -427,9 +427,9 @@ void displayResult(volatile float DistanceFront, volatile float DistanceBack)
             uart_puts(lcd_string);
             uart_puts("  cm");
             uart_puts("\n");    
-	    }
-	    else if(dist > 400)   // Distance greater than maximum possible
-	    {
+        }
+        else if(dist > 400)   // Distance greater than maximum possible
+        {
             lcd_clear(pos);
             lcd_gotoxy(7, pos);
             lcd_puts(">400");
@@ -437,7 +437,7 @@ void displayResult(volatile float DistanceFront, volatile float DistanceBack)
             uart_puts(side);
             uart_puts(" object too far.");     
             uart_puts("\n"); 
-	    }      
-    }             
+        }
+    }
 }
 
