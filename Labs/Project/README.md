@@ -39,17 +39,20 @@ The pulse width of _Echo_ high can be between 120 _μs_ (2 _cm_) and 23.5 _ms_ (
 
 ## Code description and simulations
 
-Most of the functionality is implemented directly in 'main.c' accessible [here](main.c). Libraries used are native for C, avr libraries and also from creator [Peter Fleury](http://tinyurl.com/peterfleury).
+Most of the functionality is implemented directly in `main.c` accessible [here](main.c). Libraries used are native for C, avr libraries and also from creator [Peter Fleury](http://tinyurl.com/peterfleury).
 
 ### Interrupts
 
 #### Timer0 
-Since the lowest possible value (without further alterations) for interrupt via timer overflow is for timer0 (16 _μs_), it is used for measuring the width of _Echo_ high. This should not diminish accuracy too much, as it is reasonably fast (lowest resolution is 0.272 _cm_). EDIT: The measurement error is up to 5 cm in greater distances. In it's ISR state FSM (Finite State Machine) is used with two states: `TRIG` & `STATE_ECHO_MEAS`.
+Since the lowest possible value (without further alterations) for interrupt via timer overflow is for timer0 (16 _μs_), it is used for measuring the width of _Echo_ high. This should not diminish accuracy too much, as it is reasonably fast (lowest resolution is 0.272 _cm_). EDIT: The measurement error is up to 5 cm in greater distances. 
+
+In it's ISR (Interrupt Service Routine) `TIMER0_OVF_vect`, state FSM (Finite State Machine) is used with two states: `TRIG` & `STATE_ECHO_MEAS`.
+
 - `TRIG` state sends 10us Trigger pulse 
 - `STATE_ECHO_MEAS` state measures width of Echo signal and calculateds distance in _cm_.
 
 #### Timer1 
-ISR is used for displaying the measured Front and Back on LCD and UART, turning on LEDs bars for front and for back sensor individually. Four Leds on each sensor are used. When distance is smaller than 15 cm - 4 Leds are turned on. If distance is smaller than 50 cm a bigger than 15 cm, 3 Leds are turned on. Two Leds are turned on, when distance is smaller than 100 cm and bigger than 50 cm. If distance is between 100 and 125 cm, one led is turned on. If distance is bigger than 125 cm, Leds are turned off.
+`TIMER1_OVF_vect` ISR is used for displaying the measured distance for Front and Back modules on LCD and UART, and turning on/off LED bars based on distance (as seen on table) for both sensors individually. LED bars consists of 4 individual LEDs. For example, when distance is smaller than 15 _cm_ - all are turned on. On the other hand, if distance is bigger than 125 _cm_, LEDs are turned off completely.
 
 |distance[cm]|No of turned on LEDs|
 | :--: | :--:|
