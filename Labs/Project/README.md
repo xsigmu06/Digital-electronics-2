@@ -1,26 +1,21 @@
 # Ultrasonic sensor HC-SR04
 
 ### Team members
-
 Jan Sigmund, Michal Švento
 
 [Link to GitHub project folder](https://github.com/xsigmu06/Digital-electronics-2/tree/master/Labs/Project)
 
 ### Project objectives
-
 Description of ultrasonic sensor HC-SR04 control. Parking assistant application using several ultrasonic sensors (Micro > Sensors > HC-SR04, see examples/Arduino/Arduino_SR04); display; distance in centimeters; acoustic signaling with different frequencies according to distance; distance indication on LED bar; sending application status information to the UART.
 
 ## Hardware description
-
 ### Module
-
 ![module](Images/hc-sr04.png)
 
 Ultrasonic sensor HC-SR04 enables measuring distance in range of 2 _cm_ to 4 _m_. It uses sonar to send high frequency impulses at 40 kHz, therefore it is not affected by sunlight or black material. Sound waves can also penetrate through water. Measurement accuracy can be up to 3 _mm_. Measuring angle is 15 degree.
 
 
 ### Pins
-
 Input pin _Trigger_ must receive 10 _us_ long high pulse (5_V_) to generate ultrasonic burst, which is then reflected off an obstacle back to receiver. When the sound wave gets back, a high value (5_V_) will be set on output pin _Echo_. The width of this signal (in _μs_) is proportional to measured distance divided by 2 (the wave travels to object and back), which can be calculated as follows: 
 
 _distance = time / 58 [cm]_
@@ -30,7 +25,6 @@ Speed of sound can also be used - for output in _cm_ convert velocity (e.g. 340 
 _distance = time * velocity = time * 0.017 [cm]_
 
 ### Timing
-
 The pulse width of _Echo_ high can be between 120 _μs_ (2 _cm_) and 23.5 _ms_ (400 _cm_). If no object is detected, or the distance is greater than 4 _m_, the _Echo_ signal will be max. 38 _ms_ long. To prevent previous pulse interfering with next measurement it is recommended to wait at least 60 _ms_ for each measuring cycle.
 
 ![object](Images/object.jpg)
@@ -52,9 +46,11 @@ In it's ISR (Interrupt Service Routine) `TIMER0_OVF_vect`, state FSM (Finite Sta
 - `STATE_ECHO_MEAS` state measures width of Echo signal and calculateds distance in _cm_.
 
 #### Timer1 
-`TIMER1_OVF_vect` ISR is used for displaying the measured distance for Front and Back modules on LCD and UART, and turning on/off LED bars based on distance (as seen on table) for both sensors individually. LED bars consists of 4 individual LEDs. For example, when distance is smaller than 15 _cm_ - all are turned on. On the other hand, if distance is bigger than 125 _cm_, LEDs are turned off completely.
+`TIMER1_OVF_vect` ISR (prescaler for 262 _ms_) is used for displaying the measured distance for Front and Back modules on LCD and UART, and turning on/off LED bars based on distance (as seen on table) for both sensors individually. LED bars consists of 4 individual LEDs. For example, when distance is smaller than 15 _cm_ - all are turned on. On the other hand, if distance is bigger than 125 _cm_, LEDs are turned off completely.
 
-|distance[cm]|No of turned on LEDs|
+Here, the frequency of _timer2_ interrupt enable `TIM2_interrupt_enable` and it's prescaler is also being manipulated. Again, according to distance, but this time for both ultrasonic sensors (the smaller distance is prioritized), this changes the length and frequency of tones tones generated through speaker. Length is being changed as the object would be closing in, the frequency is higher only when _distance < 15_.
+
+|_distance[cm]_|No. of LEDs _ON_|
 | :--: | :--:|
 | <15  | 4|
 | 15-50| 3 |
@@ -63,7 +59,8 @@ In it's ISR (Interrupt Service Routine) `TIMER0_OVF_vect`, state FSM (Finite Sta
 | >125 | 0 |
 
 #### Timer2 
-In TIM1 overflow interrupt we change also the lenght of pulse for speaker (i.e frequency of sound for speaker speaker) on same distance limits as on LCD. Variable  TIM2_STOP is the value which is changed.  Overflow is disabled when counter reaches the TIM2_STOP value. The overflow on TIM2 is enabled again, when TIM1 overflows. Frequency of speaker depends on closer object. 
+As specified previously, `TIMER2_OVF_vect` is used to indicate the distance with a speaker. For this a global variable `TIM2_off` is declared. Overflow is disabled when counter reaches the `TIM2_off` value. The overflow on TIM2 is enabled again, when TIM1 overflows. Frequency of speaker depends on closer object.
+
 ### Functions
 #### displayResult
 
