@@ -50,7 +50,7 @@ In it's ISR (Interrupt Service Routine) `TIMER0_OVF_vect`, state FSM (Finite Sta
 
 Here, the frequency of _timer2_ interrupt enable `TIM2_interrupt_enable` and it's prescaler is also being manipulated. Again, according to distance, but this time for both ultrasonic sensors (the smaller distance is prioritized), this changes the length and frequency of tones tones generated through speaker. Length is being changed as the object would be closing in, the frequency is higher only when _distance < 15_.
 
-|_distance[cm]_|No. of LEDs _ON_|
+|distance[_cm_]|No. of LEDs _ON_|
 | :--: | :--:|
 | <15  | 4|
 | 15-50| 3 |
@@ -59,11 +59,11 @@ Here, the frequency of _timer2_ interrupt enable `TIM2_interrupt_enable` and it'
 | >125 | 0 |
 
 #### Timer2 
-As specified previously, `TIMER2_OVF_vect` is used to indicate the distance with a speaker. For this a global variable `TIM2_off` is declared. Overflow is disabled when counter reaches the `TIM2_off` value. The overflow on TIM2 is enabled again, when TIM1 overflows. Frequency of speaker depends on closer object.
+As specified previously, `TIMER2_OVF_vect` is used to indicate the distance with a speaker. For this a global variable `TIM2_off` is declared. Overflow is disabled when counter reaches the `TIM2_off` value. The overflow on _TIM2_ is enabled again, when _TIM1_ overflows. Frequency of speaker depends on closer object, prescaler for 4 _ms_ (250 _Hz_ tone) and 2 _ms_ (500 _Hz_) is being altered.
 
 ### Functions
-#### displayResult
 
+#### displayResult
 This function provides all outputs on LCD and UART. Data are send only when the value of distance is changed. 
 We have three states, which can be displayed:
 
@@ -72,12 +72,12 @@ We have three states, which can be displayed:
 3. Distance > 400 cm - "*>400 cm*" is displayed
 
 #### lcd_clear 
-
 The function clears the part of display, where the value of distance is shown.
 
-## Video/Animation
+### Simulation
+![simul](Images/hc-sr04_simul.png)
 
-*Write your text here*
+## Video/Animation
 ![test](Images/finaltest.gif)
 
 ## References
