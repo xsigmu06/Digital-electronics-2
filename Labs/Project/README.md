@@ -45,7 +45,15 @@ Since the lowest possible value (without further alterations) for interrupt via 
 
 Second interrupt is used for displaying the measured Front and Back on LCD and UART, turning on LEDs bars for front and for back sensor individually. Four Leds on each sensor are used. When distance is smaller than 15 cm - 4 Leds are turned on. If distance is smaller than 50 cm a bigger than 15 cm, 3 Leds are turned on. Two Leds are turned on, when distance is smaller than 100 cm and bigger than 50 cm. If distance is between 100 and 125 cm, one led is turned on. If distance is bigger than 125 cm, Leds are turned off.
 
-In TIM1 overflow interrupt we change the lenght of pulse for speaker (i.e frequency of sound for speaker speaker) on same distance limits as on LCD. Overflow is disabled when counter reaches the TIM2_STOP value. The overflow on TIM2 is enabled again, when TIM1 overflows.
+|distance[cm]|No of turned on LEDs|
+| :--: | :--:|
+| <15  | 4|
+| 15-50| 3 |
+|51-100| 2 |
+|100 - 125 | 1 | 
+| >125 | 0 |
+
+In TIM1 overflow interrupt we change also the lenght of pulse for speaker (i.e frequency of sound for speaker speaker) on same distance limits as on LCD. Overflow is disabled when counter reaches the TIM2_STOP value. The overflow on TIM2 is enabled again, when TIM1 overflows. Frequency of speaker depends on closer object. 
 ## Video/Animation
 
 *Write your text here*
