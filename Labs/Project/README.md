@@ -77,7 +77,7 @@ The function clears the part of display, where the value of distance is shown.
 ### Simulation
 ![simul](Images/hc-sr04_simul.png)
 
-## Video/Animation
+## Showcase
 ![test](Images/finaltest.gif)
 
 ## References
