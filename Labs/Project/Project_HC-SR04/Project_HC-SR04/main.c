@@ -34,6 +34,12 @@
 #define LED3	PC3
 #define LED4	PC4
 
+#define LED5	PD3
+#define LED6	PD2
+#define LED7	PD1
+#define LED8	PD0
+
+
 #define speaker	PC5
 
 /* Variables ---------------------------------------------------------*/
@@ -57,28 +63,38 @@ void lcd_clear(uint8_t pos);
 int main(void)
 {
     // Output pins (Trigger)
-     GPIO_config_output(&DDRB, trigFront);
-     GPIO_write_low(&PORTB, trigFront);
-     GPIO_config_output(&DDRB, trigBack);
-     GPIO_write_low(&PORTB, trigBack);
-     
-     // Input pins (Echo)
-     GPIO_config_input_nopull(&DDRB, echoFront);
-     GPIO_config_input_nopull(&DDRB, echoBack);
-     
-     // LEDs
-     GPIO_config_output(&DDRC,LED1);
-     GPIO_write_low(&PORTC,LED1);
-     GPIO_config_output(&DDRC,LED2);
-     GPIO_write_low(&PORTC,LED2);
-     GPIO_config_output(&DDRC,LED3);
-     GPIO_write_low(&PORTC,LED3);
-     GPIO_config_output(&DDRC,LED4);
-     GPIO_write_low(&PORTC,LED4);
-     
+	GPIO_config_output(&DDRB, trigFront);
+	GPIO_write_low(&PORTB, trigFront);
+	GPIO_config_output(&DDRB, trigBack);
+	GPIO_write_low(&PORTB, trigBack);
+	
+	// Input pins (Echo)
+	GPIO_config_input_nopull(&DDRB, echoFront);
+	GPIO_config_input_nopull(&DDRB, echoBack);
+	
+	// LEDsfront
+	GPIO_config_output(&DDRC,LED1);
+	GPIO_write_low(&PORTC,LED1);
+	GPIO_config_output(&DDRC,LED2);
+	GPIO_write_low(&PORTC,LED2);
+	GPIO_config_output(&DDRC,LED3);
+	GPIO_write_low(&PORTC,LED3);
+	GPIO_config_output(&DDRC,LED4);
+	GPIO_write_low(&PORTC,LED4);
+	
+	// LEDsback
+	GPIO_config_output(&DDRD,LED5);
+	GPIO_write_low(&PORTD,LED5);
+	GPIO_config_output(&DDRD,LED6);
+	GPIO_write_low(&PORTD,LED6);	
+	GPIO_config_output(&DDRD,LED7);
+	GPIO_write_low(&PORTD,LED7);
+	GPIO_config_output(&DDRD,LED8);
+	GPIO_write_low(&PORTD,LED8); 
+	 
      // speaker
-     GPIO_config_output(&DDRC, speaker);
-     GPIO_write_low(&PORTC, speaker);
+    GPIO_config_output(&DDRC, speaker);
+    GPIO_write_low(&PORTC, speaker);
      
     // Initialize LCD display
     lcd_init(LCD_DISP_ON);
@@ -95,14 +111,17 @@ int main(void)
     // Configure 8-bit Timer/Counter0
     // Enable interrupt and set the overflow prescaler to 16 us
     // Used for measuring and calculating distance
-    //TIM0_overflow_16us();
-    //TIM0_overflow_interrupt_enable();
+    TIM0_overflow_16us();
+    TIM0_overflow_interrupt_enable();
     
     // Timer0 1us overflow interrupt
     // F_CPU/freq*2*N -1
-    OCR0A = 127;    
-    TIM0_CTC();
-    TIM0_overflow_COMPA();
+    //OCR0A = 127;    
+    //TIM0_CTC();
+    //TIM0_overflow_COMPA();
+	//TIM0_overflow_16us();
+	
+
 
     // Configure 16-bit Timer/Counter1
     // Enable interrupt and set the overflow prescaler to 262 ms
@@ -130,7 +149,7 @@ int main(void)
  * 
  */
 //ISR(TIMER0_OVF_vect)
-ISR(TIMER0_COMPA_vect)
+ISR(TIMER0_OVF_vect)
 {
     static uint16_t number_of_overflows = 0;
     static uint16_t lenFront = 0;
@@ -201,62 +220,120 @@ ISR(TIMER1_OVF_vect)
     {
         smallerDist = distBack;
     }
-            
-    // Display on LEDs, 
-    // change frequency of speaker tone with TIM2 prescaler
-    // change frequency of disabling TIM2        
-    if(smallerDist <= 15)
+    
+	
+	
+	// change frequency of speaker tone with TIM2 prescaler
+	// change frequency of disabling TIM2
+	if(smallerDist <= 15)
+	{	
+		TIM2_off = 200;
+		TIM2_overflow_2ms();
+		TIM2_overflow_interrupt_enable();
+	}
+	else if(smallerDist <= 50)
+	{		
+		TIM2_off = 50;
+		TIM2_overflow_4ms();
+		TIM2_overflow_interrupt_enable();
+	}
+	else if(smallerDist <= 100)
+	{
+		TIM2_off = 10;
+		TIM2_overflow_4ms();
+		TIM2_overflow_interrupt_enable();
+	}
+	else if(smallerDist <= 125)
+	{		
+		TIM2_off = 5;
+		TIM2_overflow_interrupt_enable();
+	}
+	else
+	{		
+		TIM2_overflow_interrupt_disable();
+	}
+	
+	// Display on LEDs, Front
+
+	if(distFront <= 15)
+	{
+		GPIO_write_high(&PORTC, LED1);
+		GPIO_write_high(&PORTC, LED2);
+		GPIO_write_high(&PORTC, LED3);
+		GPIO_write_high(&PORTC, LED4);
+	}
+	else if(distFront <= 50)
+	{
+		GPIO_write_high(&PORTC, LED1);
+		GPIO_write_high(&PORTC, LED2);
+		GPIO_write_high(&PORTC, LED3);
+		GPIO_write_low(&PORTC, LED4);
+
+	}
+	else if(distFront <= 100)
+	{
+		GPIO_write_high(&PORTC, LED1);
+		GPIO_write_high(&PORTC, LED2);
+		GPIO_write_low(&PORTC, LED3);
+		GPIO_write_low(&PORTC, LED4);
+	}
+	else if(distFront <= 125)
+	{
+		GPIO_write_high(&PORTC, LED1);
+		GPIO_write_low(&PORTC, LED2);
+		GPIO_write_low(&PORTC, LED3);
+		GPIO_write_low(&PORTC, LED4);
+	}
+	else
+	{
+		GPIO_write_low(&PORTC, LED1);
+		GPIO_write_low(&PORTC, LED2);
+		GPIO_write_low(&PORTC, LED3);
+		GPIO_write_low(&PORTC, LED4);
+	}
+		       
+    // Display on LEDs, Back 
+
+	if(distBack <= 15)
     {
-        GPIO_write_high(&PORTC, LED1);
-        GPIO_write_high(&PORTC, LED2);
-        GPIO_write_high(&PORTC, LED3);
-        GPIO_write_high(&PORTC, LED4);
-        
-        TIM2_off = 200;
-        TIM2_overflow_2ms();    
-        TIM2_overflow_interrupt_enable();    
+        GPIO_write_high(&PORTD, LED5);
+        GPIO_write_high(&PORTD, LED6);
+        GPIO_write_high(&PORTD, LED7);
+        GPIO_write_high(&PORTD, LED8);
     }
-    else if(smallerDist <= 50)
+    else if(distBack <= 50)
     {
-        GPIO_write_high(&PORTC, LED1);
-        GPIO_write_high(&PORTC, LED2);
-        GPIO_write_high(&PORTC, LED3);
-        GPIO_write_low(&PORTC, LED4);
-        
-        TIM2_off = 50;
-        TIM2_overflow_4ms();
-        TIM2_overflow_interrupt_enable();   
+        GPIO_write_high(&PORTD, LED5);
+        GPIO_write_high(&PORTD, LED6);
+        GPIO_write_high(&PORTD, LED7);
+        GPIO_write_low(&PORTD, LED8);
+
     }
-    else if(smallerDist <= 100)
+    else if(distBack <= 100)
     {
-        GPIO_write_high(&PORTC, LED1);
-        GPIO_write_high(&PORTC, LED2);
-        GPIO_write_low(&PORTC, LED3);
-        GPIO_write_low(&PORTC, LED4);
-        
-        TIM2_off = 10;
-        TIM2_overflow_4ms();
-        TIM2_overflow_interrupt_enable();   
+        GPIO_write_high(&PORTD, LED5);
+        GPIO_write_high(&PORTD, LED6);
+        GPIO_write_low(&PORTD, LED7);
+        GPIO_write_low(&PORTD, LED8);
     }
-    else if(smallerDist <= 125)
+    else if(distBack <= 125)
     {
-        GPIO_write_high(&PORTC, LED1);
-        GPIO_write_low(&PORTC, LED2);
-        GPIO_write_low(&PORTC, LED3);
-        GPIO_write_low(&PORTC, LED4);
-        
-        TIM2_off = 5;
-        TIM2_overflow_interrupt_enable();  
+        GPIO_write_high(&PORTD, LED5);
+        GPIO_write_low(&PORTD, LED6);
+        GPIO_write_low(&PORTD, LED7);
+        GPIO_write_low(&PORTD, LED8);
     }
     else
     {
-        GPIO_write_low(&PORTC, LED1);
-        GPIO_write_low(&PORTC, LED2);
-        GPIO_write_low(&PORTC, LED3);
-        GPIO_write_low(&PORTC, LED4);
-        
-        TIM2_overflow_interrupt_disable();
+        GPIO_write_low(&PORTD, LED5);
+        GPIO_write_low(&PORTD, LED6);
+        GPIO_write_low(&PORTD, LED7);
+        GPIO_write_low(&PORTD, LED8);
     }
+	
+
+	
+	
 }
 
 ISR(TIMER2_OVF_vect)
@@ -359,3 +436,4 @@ void displayResult(volatile float DistanceFront, volatile float DistanceBack)
 	    }          
     }             
 }
+
