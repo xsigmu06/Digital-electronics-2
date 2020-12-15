@@ -55,12 +55,12 @@ void GPIO_toggle(volatile uint8_t *reg_name, uint8_t pin_num)
 /*--------------------------------------------------------------------*/
 uint8_t GPIO_read(volatile uint8_t *reg_name, uint8_t pin_num)
 {
-	if(bit_is_clear(*reg_name, pin_num))
-	{
+    if(bit_is_clear(*reg_name, pin_num))
+    {
         return 0;
-	}
-	else
-	{
+    }
+    else
+    {
         return 1;
-	}
+    }
 }
